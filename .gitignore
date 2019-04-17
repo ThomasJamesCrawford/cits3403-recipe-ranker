@@ -1,0 +1,9 @@
+# virtual environment (virtualenv)
+venv
+
+# ide
+.vscode
+.idea
+
+# python cache
+__pycache__
