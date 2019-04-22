@@ -10,14 +10,14 @@ def index():
 @app.route('/account')
 def account():
     """Renders the account page."""
-    return render_template('account.html')
+    return render_template('account.html', title='Account')
 
 @app.route('/polls')
 def polls():
     """Renders the polls page."""
-    return render_template('polls.html')
+    return render_template('polls.html', title='Polls')
 
 @app.route('/register')
 def register():
     """Renders the register page."""
-    return render_template('register.html')
+    return render_template('register.html', title='Register')
