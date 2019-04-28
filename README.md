@@ -30,7 +30,7 @@ makes system environment variables automatically loaded from a file
 ### the database
 `flask db upgrade` - uses newest migration script, do this when source control has a new app.db
 `flask db downgrade` - removes migration script
-`flask fb migrate` - generates migration script, do this when the models are changed
+`flask db migrate` - generates migration script, do this when the models are changed
 
 the db.Column etc in models.py will show errors from default linter swapping to flake8 seems to get rid of them
 - ctrl+shift+p -> select linter -> flake8 
