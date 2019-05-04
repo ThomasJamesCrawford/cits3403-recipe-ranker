@@ -4,8 +4,8 @@ from wtforms.validators import DataRequired, ValidationError, Email, EqualTo
 from app.models import User
 
 
-#TODO allow login with either username or email
-#TODO another login form for admin registration, with special field to authenticate so not all can be an admin
+# TODO allow login with either username or email
+# TODO another login form for admin registration, with special field to authenticate so not all can be an admin
 class LoginForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired()])
     password = PasswordField('Password', validators=[DataRequired()])

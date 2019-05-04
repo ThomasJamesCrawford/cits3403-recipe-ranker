@@ -42,6 +42,7 @@ def login():
 
 
 # logout, login required
+@login_required
 @app.route('/logout')
 def logout():
     logout_user()
@@ -58,30 +59,43 @@ def register():
     if form.validate_on_submit():
         user = User(username=form.username.data, email=form.email.data)
         user.set_password(form.password.data)
-        db.session.add(user) # adds to the database
-        db.session.commit() # commits all the changes in the database
+        db.session.add(user)  # adds to the database
+        db.session.commit()  # commits all the changes in the database
         flash('Congratulations, you are now a registered user!')
         return redirect(url_for('login'))
     return render_template('register.html', title='Register', form=form)
 
 
-
-#TODO
+# TODO
 # renders account, login required
 @app.route('/account')
 def account():
     return render_template('account.html', title='My Account')
 
 
-#TODO
+# TODO
 # renders polls, login required
 @app.route('/polls')
 def polls():
     return render_template('polls.html', title='Polls')
 
 
-#TODO
+# TODO
 # renders users, admin only
 @app.route('/users')
 def users():
     return render_template('users.html', title='Users Management')
+
+
+# TODO
+# admin page to manage polls
+@app.route('/manage_polls')
+def manage_polls():
+    return render_template('manage_polls.html', title='Manage Polls')
+
+
+# TODO
+# admin page to manage users
+@app.route('/manage_users')
+def manage_users():
+    return render_template('manage_users.html', title='Manage Users')

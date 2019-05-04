@@ -11,13 +11,13 @@ def load_user(id):
 
 # users table
 class User(UserMixin, db.Model):
-    id = db.Column(db.Integer, primary_key=True) #not null and unique by default
+    id = db.Column(db.Integer, primary_key=True)  # not null and unique by default
     username = db.Column(db.String(64), nullable=False, unique=True, index=True)
     email = db.Column(db.String(128), nullable=False, unique=True, index=True)
     password_hash = db.Column(db.String(128), nullable=False)
     date_registered = db.Column(db.DateTime, nullable=False, index=True, default=datetime.utcnow)
     is_admin = db.Column(db.Boolean, nullable=False, default=False)
-    polls = db.relationship("Poll", backref='creator', lazy='dynamic') #dynamic so we can filter the queries later
+    polls = db.relationship("Poll", backref='creator', lazy='dynamic')  # dynamic so we can filter the queries later
     recipes = db.relationship("Recipe", backref='contributor', lazy='dynamic')
 
     def __repr__(self):
