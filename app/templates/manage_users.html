@@ -7,4 +7,11 @@
 
     <h1>Hello Admin, {{ current_user.username }}!</h1>
 
+    {% for user in current_user.query.all() %}
+    <h3>Username: {{ user.username }}</h3>
+    <p>Email: {{ user.email }}</p>
+    <p>Admin: {{ user.is_admin }}</p>
+    <p>Date Registered: {{ user.date_registered }}</p>
+    {% endfor %}
+
 {% endblock %}
