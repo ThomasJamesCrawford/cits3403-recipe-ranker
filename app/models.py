@@ -57,7 +57,7 @@ class Recipe(db.Model):
         return '<Poll {}>'.format(self.name)
 
 
-#TODO table for storing votes so one user cant vote the same thing multiple times
+# TODO table for storing votes so one user cant vote the same thing multiple times
 # votes table
 class Vote(db.Model):
     id = db.Column(db.Integer, primary_key=True)

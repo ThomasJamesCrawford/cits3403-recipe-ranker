@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, SelectField
 from wtforms.validators import DataRequired, ValidationError, Email, EqualTo
 from app.models import User
 
@@ -30,3 +30,16 @@ class RegistrationForm(FlaskForm):
         user = User.query.filter_by(email=email.data).first()
         if user is not None:
             raise ValidationError('Please use a different email address.')
+
+
+class PollCreationForm(FlaskForm):
+    name = StringField('Name', validators=[DataRequired()])
+    description = StringField('Description', validators=[DataRequired()])
+    submit = SubmitField('Add Poll')
+
+
+class RecipesCreationForm(FlaskForm):
+    name = StringField('Recipe Name', validators=[DataRequired()])
+    description = StringField('Recipe Description', validators=[DataRequired()])
+    poll = SelectField('Select Poll', validators=[])
+    submit = SubmitField('Save Recipe')

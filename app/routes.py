@@ -2,8 +2,8 @@ from flask import render_template, flash, redirect, url_for, request
 from flask_login import current_user, login_user, logout_user, login_required
 from werkzeug.urls import url_parse
 from app import app, db
-from app.forms import LoginForm, RegistrationForm
-from app.models import User
+from app.forms import LoginForm, RegistrationForm, PollCreationForm, RecipesCreationForm
+from app.models import User, Poll, Recipe
 
 
 # renders home
@@ -54,7 +54,7 @@ def logout():
 def register():
     if current_user.is_authenticated:
         return redirect(url_for('index'))
-    
+
     form = RegistrationForm()
     if form.validate_on_submit():
         user = User(username=form.username.data, email=form.email.data)
@@ -99,3 +99,48 @@ def manage_polls():
 @app.route('/manage_users')
 def manage_users():
     return render_template('manage_users.html', title='Manage Users')
+
+
+# TODO
+# admin page to add recipes
+@app.route('/add_recipe', methods=['GET', 'POST'])
+def add_recipe():
+    form = RecipesCreationForm()
+
+    form.poll.choices = [
+        (poll.id, poll.name) for poll in Poll.query.order_by('date_created')]
+
+    if form.validate_on_submit():
+        recipe = Recipe(
+            name=form.name.data,
+            description=form.description.data,
+            contributor_id=current_user.id,
+            poll_id=form.poll.data
+            )
+
+        db.session.add(recipe)  # adds to the database
+        db.session.commit()  # commits all the changes in the database
+        flash('Added to database')
+        return redirect(url_for('add_recipe'))
+
+    return render_template('add_recipe.html', title='Add Recipe', form=form)
+
+# TODO
+# admin page to add polls
+@app.route('/add_poll', methods=['GET', 'POST'])
+def add_poll():
+    form = PollCreationForm()
+
+    if form.validate_on_submit():
+        poll = Poll(
+            name=form.name.data,
+            description=form.description.data,
+            creator_id=current_user.id
+            )
+
+        db.session.add(poll)  # adds to the database
+        db.session.commit()  # commits all the changes in the database
+        flash('Added to database')
+        return redirect(url_for('add_poll'))
+
+    return render_template('add_poll.html', title='Add Poll', form=form)

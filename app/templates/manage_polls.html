@@ -7,4 +7,9 @@
 
     <h1>Hello Admin, {{ current_user.username }}!</h1>
 
+    <div class="list-group list-group-flush">
+        <a href="{{ url_for('add_poll') }}" class="list-group-item list-group-item-action">Create New Poll</a>
+        <a href="{{ url_for('add_recipe') }}" class="list-group-item list-group-item-action">Add Recipe To Poll</a>
+    </div>
+        
 {% endblock %}
