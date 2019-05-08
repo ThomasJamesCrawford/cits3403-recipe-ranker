@@ -2,6 +2,7 @@
 
 {% block content %}
 
+
     <h1>Create New Poll</h1>
     <form action="" method="post">
         {{ form.hidden_tag() }}
@@ -30,6 +31,7 @@
     {{ form.errors }}
     {% endif %}
 
+    <!--TODO add button to remove recipe-->
     <button type="button" class="btn btn-primary" onclick="addRecipe()">Add Recipe Field</button>
 
     </form>
