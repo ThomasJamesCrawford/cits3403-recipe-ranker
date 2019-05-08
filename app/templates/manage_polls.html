@@ -11,5 +11,17 @@
         <a href="{{ url_for('add_poll') }}" class="list-group-item list-group-item-action">Create New Poll</a>
         <a href="{{ url_for('add_recipe') }}" class="list-group-item list-group-item-action">Add Recipe To Poll</a>
     </div>
-        
+
+    <h3>Polls</h3>
+    {% for p in poll.query.all() %}
+    <p>Name: {{ p.name }}</p>
+    <p>Description: {{ p.description }}</p>
+    {% endfor %}
+
+    <h3>Recipes</h3>
+    {% for r in recipe.query.all() %}
+    <p>Name: {{ r.name }}</p>
+    <p>Description: {{ r.description }}</p>
+    {% endfor %}
+
 {% endblock %}

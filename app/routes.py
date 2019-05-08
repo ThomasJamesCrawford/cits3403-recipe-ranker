@@ -91,7 +91,11 @@ def users():
 # admin page to manage polls
 @app.route('/manage_polls')
 def manage_polls():
-    return render_template('manage_polls.html', title='Manage Polls')
+    return render_template(
+        'manage_polls.html',
+        title='Manage Polls',
+        poll=Poll,
+        recipe=Recipe)
 
 
 # TODO
@@ -136,9 +140,21 @@ def add_poll():
             name=form.name.data,
             description=form.description.data,
             creator_id=current_user.id
+        )
+
+        db.session.add(poll)
+        db.session.flush()  # lets you access the generated poll.id
+
+        for r in form.recipes:
+            recipe = Recipe(
+                name=r.data['name'],
+                description=r.data['description'],
+                contributor_id=current_user.id,
+                poll_id=poll.id
             )
 
-        db.session.add(poll)  # adds to the database
+            db.session.add(recipe)
+
         db.session.commit()  # commits all the changes in the database
         flash('Added to database')
         return redirect(url_for('add_poll'))

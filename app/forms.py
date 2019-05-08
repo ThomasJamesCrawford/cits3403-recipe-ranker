@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField, SelectField
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, SelectField, FieldList, FormField
 from wtforms.validators import DataRequired, ValidationError, Email, EqualTo
 from app.models import User
 
@@ -32,14 +32,28 @@ class RegistrationForm(FlaskForm):
             raise ValidationError('Please use a different email address.')
 
 
+class RecipeSubForm(FlaskForm):
+    class Meta:
+        csrf = False  # subform doesnt need csrf token
+
+    name = StringField(
+        'Recipe Name', validators=[DataRequired()])
+    description = StringField(
+        'Recipe Description', validators=[DataRequired()])
+
+
 class PollCreationForm(FlaskForm):
     name = StringField('Name', validators=[DataRequired()])
     description = StringField('Description', validators=[DataRequired()])
+    recipes = FieldList(
+        FormField(RecipeSubForm),
+        validators=[])
     submit = SubmitField('Add Poll')
 
 
 class RecipesCreationForm(FlaskForm):
     name = StringField('Recipe Name', validators=[DataRequired()])
-    description = StringField('Recipe Description', validators=[DataRequired()])
-    poll = SelectField('Select Poll', validators=[])
+    description = StringField(
+        'Recipe Description', validators=[DataRequired()])
+    poll = SelectField('Select Poll', validators=[DataRequired()], coerce=int)
     submit = SubmitField('Save Recipe')
