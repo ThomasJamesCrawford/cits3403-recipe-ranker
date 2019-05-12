@@ -1,1 +1,6 @@
 /* custom css */
+
+/* pointer change for clickable table row on hover */
+table tr[data-href] {
+    cursor: pointer;
+}

@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<!--TODO-->
+<!--page for a recipe, admins only-->
+<!--shows all information about a recipe-->
+<!--TODO add update recipe forms and button for displaying that form-->
+
+<article class="container">
+    <header>
+        <h1>{{ recipe.name }} - Recipe</h1>
+    </header>
+    <section class="row">
+        <h2>About this Recipe</h2>
+        <div class="container">
+            <p>Description: {{ recipe.description }}</p>
+            <p>Date Added: {{ recipe.date_added }}</p>
+            <p>Contributor: {{ users.query.filter_by(id=recipe.contributor_id).first().username }}</p>
+            <p>Poll Containing this Recipe: {{ polls.query.filter_by(id=recipe.poll_id).first().name }}</p>
+            <!-- assuming polls have one to many relationship with recipes -->
+            <a class="btn btn-secondary btn-sm mt-1 mb-1" href="">Update this Recipe</a><!-- add routes -->
+            <button type="button" class="btn btn-danger btn-sm m-1" data-toggle="modal"
+                data-target="#deleteModal">Delete this Recipe</button>
+        </div>
+    </section>
+    <section class="row">
+        <h2>Recipe Votes Statistics</h2><!-- TODO add other forms of stats, ie a graph-->
+        <div class="container">
+            <p>Total Votes: {{ recipe.votes_count }}</p>
+        </div>
+    </section>
+</article>
+
+<!-- modal from bootstrap docs -->
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Delete this Recipe?</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <form action="" method="POST">
+                    <!-- add routes -->
+                    <input class="btn btn-danger" type="submit" value="Delete">
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

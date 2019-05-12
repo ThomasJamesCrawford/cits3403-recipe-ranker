@@ -1,4 +1,4 @@
-from flask import render_template, flash, redirect, url_for, request
+from flask import render_template, flash, redirect, url_for, request, abort
 from flask_login import current_user, login_user, logout_user, login_required
 from werkzeug.urls import url_parse
 from app import app, db
@@ -81,13 +81,6 @@ def polls():
 
 
 # TODO
-# renders users, admin only
-@app.route('/users')
-def users():
-    return render_template('users.html', title='Users Management')
-
-
-# TODO
 # admin page to manage polls
 @app.route('/manage_polls')
 def manage_polls():
@@ -129,6 +122,7 @@ def add_recipe():
 
     return render_template('add_recipe.html', title='Add Recipe', form=form)
 
+
 # TODO
 # admin page to add polls
 @app.route('/add_poll', methods=['GET', 'POST'])
@@ -160,3 +154,69 @@ def add_poll():
         return redirect(url_for('add_poll'))
 
     return render_template('add_poll.html', title='Add Poll', form=form)
+
+
+# renders the page for a poll with given id
+@login_required
+@app.route('/poll/<int:poll_id>')
+def poll(poll_id):
+    if User.query.filter_by(username=current_user.username).first().is_admin:
+        poll = Poll.query.get_or_404(poll_id)
+        return render_template('poll.html', title=poll.name + ' - Poll', users=User, poll=poll)
+    else:
+        abort(403)
+
+
+# TODO
+# updates a poll with given id
+@login_required
+@app.route("/poll/<int:poll_id>/update", methods=['GET', 'POST'])
+def update_poll(poll_id):
+    if User.query.filter_by(username=current_user.username).first().is_admin:
+        return -1
+    else:
+        abort(403)
+
+
+# TODO
+# delete a poll with given id
+@login_required
+@app.route("/poll/<int:post_id>/delete", methods=['POST'])
+def delete_post(poll_id):
+    if User.query.filter_by(username=current_user.username).first().is_admin:
+        return -1
+    else:
+        abort(403)
+
+
+# renders the page for a recipe with given id
+@login_required
+@app.route('/recipe/<int:recipe_id>')
+def recipe(recipe_id):
+    if User.query.filter_by(username=current_user.username).first().is_admin:
+        recipe = Recipe.query.get_or_404(recipe_id)
+        return render_template('recipe.html', title=recipe.name + ' - Recipe', users=User, polls=Poll, recipe=recipe)
+    else:
+        abort(403)
+
+
+# TODO
+# updates a recipe with given id
+@login_required
+@app.route("/recipe/<int:recipe_id>/update", methods=['GET', 'POST'])
+def update_recipe(recipe_id):
+    if User.query.filter_by(username=current_user.username).first().is_admin:
+        return -1
+    else:
+        abort(403)
+
+
+# TODO
+# delete a recipe with given id
+@login_required
+@app.route("/recipe/<int:recipe_id>/delete", methods=['POST'])
+def delete_recipe(recipe_id):
+    if User.query.filter_by(username=current_user.username).first().is_admin:
+        return -1
+    else:
+        abort(403)
