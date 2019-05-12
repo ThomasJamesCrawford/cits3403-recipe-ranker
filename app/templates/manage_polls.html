@@ -32,7 +32,7 @@
         </tr>
       </thead>
       <tbody>
-        {% for p in poll.query.all() %}
+        {% for p in polls.query.all() %}
         <tr class='clickable-table-row' data-href="{{ url_for('poll', poll_id=p.id) }}">
           <th scope="row">{{ p.id }}</th>
           <td>{{ p.name }}</td>
@@ -55,7 +55,7 @@
         </tr>
       </thead>
       <tbody>
-        {% for r in recipe.query.all() %}
+        {% for r in recipes.query.all() %}
         <tr class='clickable-table-row' data-href="{{ url_for('recipe', recipe_id=r.id) }}">
           <th scope="row">{{ r.id }}</th>
           <td>{{ r.name }}</td>
