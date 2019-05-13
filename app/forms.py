@@ -48,7 +48,7 @@ class PollCreationForm(FlaskForm):
     recipes = FieldList(
         FormField(RecipeSubForm),
         validators=[])
-    submit = SubmitField('Add Poll')
+    submit = SubmitField('Submit Poll')
 
 
 class RecipesCreationForm(FlaskForm):
@@ -56,4 +56,4 @@ class RecipesCreationForm(FlaskForm):
     description = StringField(
         'Recipe Description', validators=[DataRequired()])
     poll = SelectField('Select Poll', validators=[DataRequired()], coerce=int)
-    submit = SubmitField('Save Recipe')
+    submit = SubmitField('Submit Recipe')

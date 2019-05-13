@@ -133,10 +133,10 @@ def add_poll():
                 db.session.add(recipe)
 
             db.session.commit()  # commits all the changes in the database
-            flash('Added to database')
+            flash('The poll is added', 'success')
             return redirect(url_for('add_poll'))
 
-        return render_template('add_poll.html', title='Add Poll', form=form)
+        return render_template('add_poll.html', title='Add Poll', form=form, legend='Create a Poll')
     else:
         abort(403)
 
@@ -175,7 +175,7 @@ def add_recipe():
 @login_required
 def poll(poll_id):
     if current_user.is_admin:
-        poll = Poll.query.get_or_404(poll_id)
+        poll = Poll.query.get_or_404(poll_id) # gives 404 if not found
         return render_template('poll.html', title=poll.name + ' - Poll', users=User, poll=poll)
     else:
         abort(403)
@@ -187,18 +187,46 @@ def poll(poll_id):
 @login_required
 def update_poll(poll_id):
     if current_user.is_admin:
-        return -1
+        poll = Poll.query.get_or_404(poll_id)
+        form = PollCreationForm()
+
+        if form.validate_on_submit():
+            poll.name = form.name.data
+            poll.description = form.description.data
+
+            for r in form.recipes.data:
+                recipe = Recipe.query.get(r.id)
+                recipe.name = r.data['name']
+                recipe.description = r.data['description']
+            
+            db.session.commit()
+            flash('This poll has been updated!', 'success')
+            return redirect(url_for('poll', poll_id=poll.id))
+
+        elif request.method == 'GET':
+            form.name.data = poll.name
+            form.description.data = poll.description
+
+            # TODO existing recipes show up
+
+        return render_template('add_poll.html', title='Update - ' + poll.name + ' - Poll', form=form, legend='Update - ' + poll.name + ' - Poll')
     else:
         abort(403)
 
 
-# TODO
-# delete a poll with given id
-@app.route("/poll/<int:post_id>/delete", methods=['POST'])
+# delete a poll with given id including all the recipes in the poll
+@app.route("/poll/<int:poll_id>/delete", methods=['POST'])
 @login_required
-def delete_post(poll_id):
+def delete_poll(poll_id):
     if current_user.is_admin:
-        return -1
+        poll = Poll.query.get_or_404(poll_id)
+        recipes = Recipe.query.filter_by(poll_id=poll.id).all()
+        for r in recipes:
+            db.session.delete(r)
+        db.session.delete(poll)
+        db.session.commit()
+        flash('This poll has been deleted!', 'success')
+        return redirect(url_for('manage_polls'))
     else:
         abort(403)
 
