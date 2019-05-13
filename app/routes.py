@@ -2,7 +2,7 @@ from flask import render_template, flash, redirect, url_for, request, abort
 from flask_login import current_user, login_user, logout_user, login_required
 from werkzeug.urls import url_parse
 from app import app, db
-from app.forms import LoginForm, RegistrationForm, PollCreationForm, RecipesCreationForm
+from app.forms import LoginForm, RegistrationForm, PollForm, RecipeForm
 from app.models import User, Poll, Recipe
 
 
@@ -104,13 +104,12 @@ def manage_users():
         abort(403)
 
 
-# TODO
 # admin page to add polls
 @app.route('/add_poll', methods=['GET', 'POST'])
 @login_required
 def add_poll():
     if current_user.is_admin:
-        form = PollCreationForm()
+        form = PollForm()
 
         if form.validate_on_submit():
             poll = Poll(
@@ -136,18 +135,17 @@ def add_poll():
             flash('The poll is added', 'success')
             return redirect(url_for('add_poll'))
 
-        return render_template('add_poll.html', title='Add Poll', form=form, legend='Create a Poll')
+        return render_template('submit_poll.html', title='Create Poll', form=form, legend='Create a Poll')
     else:
         abort(403)
 
 
-# TODO
 # admin page to add recipes
 @app.route('/add_recipe', methods=['GET', 'POST'])
 @login_required
 def add_recipe():
     if current_user.is_admin:
-        form = RecipesCreationForm()
+        form = RecipeForm()
 
         form.poll.choices = [
             (poll.id, poll.name) for poll in Poll.query.order_by('date_created')]
@@ -162,10 +160,10 @@ def add_recipe():
 
             db.session.add(recipe)  # adds to the database
             db.session.commit()  # commits all the changes in the database
-            flash('Added to database')
+            flash('The recipe is added', 'success')
             return redirect(url_for('add_recipe'))
 
-        return render_template('add_recipe.html', title='Add Recipe', form=form)
+        return render_template('submit_recipe.html', title='Add Recipe', form=form, legend='Add a Recipe')
     else:
         abort(403)
 
@@ -188,7 +186,7 @@ def poll(poll_id):
 def update_poll(poll_id):
     if current_user.is_admin:
         poll = Poll.query.get_or_404(poll_id)
-        form = PollCreationForm()
+        form = PollForm()
 
         if form.validate_on_submit():
             poll.name = form.name.data
@@ -200,7 +198,7 @@ def update_poll(poll_id):
                 recipe.description = r.data['description']
             
             db.session.commit()
-            flash('This poll has been updated!', 'success')
+            flash('The poll has been updated!', 'success')
             return redirect(url_for('poll', poll_id=poll.id))
 
         elif request.method == 'GET':
@@ -209,7 +207,7 @@ def update_poll(poll_id):
 
             # TODO existing recipes show up
 
-        return render_template('add_poll.html', title='Update - ' + poll.name + ' - Poll', form=form, legend='Update - ' + poll.name + ' - Poll')
+        return render_template('submit_poll.html', title='Update - ' + poll.name + ' - Poll', form=form, legend='Update - ' + poll.name + ' - Poll')
     else:
         abort(403)
 
@@ -225,7 +223,7 @@ def delete_poll(poll_id):
             db.session.delete(r)
         db.session.delete(poll)
         db.session.commit()
-        flash('This poll has been deleted!', 'success')
+        flash('The poll has been deleted!', 'success')
         return redirect(url_for('manage_polls'))
     else:
         abort(403)
@@ -242,23 +240,42 @@ def recipe(recipe_id):
         abort(403)
 
 
-# TODO
 # updates a recipe with given id
 @app.route("/recipe/<int:recipe_id>/update", methods=['GET', 'POST'])
 @login_required
 def update_recipe(recipe_id):
     if current_user.is_admin:
-        return -1
+        recipe = Recipe.query.get_or_404(recipe_id)
+        form = RecipeForm()
+        form.poll.choices = [(poll.id, poll.name) for poll in Poll.query.order_by('date_created')]
+        
+        if form.validate_on_submit():
+            recipe.name = form.name.data
+            recipe.description = form.description.data
+            recipe.poll = Poll.query.filter_by(id=form.poll.data).first() # TODO might be changed when database schema is changed
+            db.session.commit()
+            flash('The recipe has been updated!', 'success')
+            return redirect(url_for('recipe', recipe_id=recipe.id))
+
+        elif request.method == 'GET':
+            form.name.data = recipe.name
+            form.description.data = recipe.description
+            form.poll.data = recipe.poll.id # TODO might be changed when database schema is changed
+
+        return render_template('submit_recipe.html', title='Update - ' + recipe.name + ' - Recipe', form=form, legend='Update - ' + recipe.name + ' - Recipe')
     else:
         abort(403)
 
 
-# TODO
 # delete a recipe with given id
 @app.route("/recipe/<int:recipe_id>/delete", methods=['POST'])
 @login_required
 def delete_recipe(recipe_id):
     if current_user.is_admin:
-        return -1
+        recipe = Recipe.query.get_or_404(recipe_id)
+        db.session.delete(recipe)
+        db.session.commit()
+        flash('The recipe has been deleted!', 'success')
+        return redirect(url_for('manage_polls'))
     else:
         abort(403)

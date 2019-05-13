@@ -6,6 +6,7 @@ from app.models import User
 
 # TODO allow login with either username or email
 # TODO another login form for admin registration, with special field to authenticate so not all can be an admin
+
 class LoginForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired()])
     password = PasswordField('Password', validators=[DataRequired()])
@@ -32,7 +33,7 @@ class RegistrationForm(FlaskForm):
             raise ValidationError('Please use a different email address.')
 
 
-class RecipeSubForm(FlaskForm):
+class RecipesSubForm(FlaskForm):
     class Meta:
         csrf = False  # subform doesnt need csrf token
 
@@ -42,18 +43,18 @@ class RecipeSubForm(FlaskForm):
         'Recipe Description', validators=[DataRequired()])
 
 
-class PollCreationForm(FlaskForm):
+class PollForm(FlaskForm):
     name = StringField('Name', validators=[DataRequired()])
     description = StringField('Description', validators=[DataRequired()])
     recipes = FieldList(
-        FormField(RecipeSubForm),
+        FormField(RecipesSubForm),
         validators=[])
     submit = SubmitField('Submit Poll')
 
 
-class RecipesCreationForm(FlaskForm):
+class RecipeForm(FlaskForm):
     name = StringField('Recipe Name', validators=[DataRequired()])
     description = StringField(
         'Recipe Description', validators=[DataRequired()])
-    poll = SelectField('Select Poll', validators=[DataRequired()], coerce=int)
+    poll = SelectField('Select Poll', validators=[DataRequired()], coerce=int) # TODO might be changed when database schema is changed
     submit = SubmitField('Submit Recipe')

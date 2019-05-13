@@ -19,8 +19,8 @@
             <p>Contributor: {{ users.query.filter_by(id=recipe.contributor_id).first().username }}</p>
             <p>Poll Containing this Recipe: {{ polls.query.filter_by(id=recipe.poll_id).first().name }}</p>
             <!-- assuming polls have one to many relationship with recipes -->
-            <a class="btn btn-secondary btn-sm mt-1 mb-1" href="">Update this Recipe</a><!-- add routes -->
-            <button type="button" class="btn btn-danger btn-sm m-1" data-toggle="modal"
+            <a class="btn btn-secondary btn-sm" href="{{ url_for('update_recipe', recipe_id=recipe.id) }}">Update this Recipe</a>
+            <button type="button" class="btn btn-danger btn-sm" data-toggle="modal"
                 data-target="#deleteModal">Delete this Recipe</button>
         </div>
     </section>
@@ -32,7 +32,7 @@
     </section>
 </article>
 
-<!-- modal from bootstrap docs -->
+<!-- modal -->
 <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"
     aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -45,7 +45,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <form action="" method="POST">
+                <form action="{{ url_for('delete_recipe', recipe_id=recipe.id) }}" method="POST">
                     <!-- add routes -->
                     <input class="btn btn-danger" type="submit" value="Delete">
                 </form>

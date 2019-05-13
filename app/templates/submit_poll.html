@@ -4,7 +4,7 @@
 
 <section class="row">
     <form action="" method="post">
-
+        
         <!-- fields -->
         <fieldset class="form-group">
             <legend>{{ legend }}</legend>
@@ -22,7 +22,7 @@
             </div>                
         </fieldset>
 
-        <!-- errors??? -->
+        <!-- messages -->
         <div class="form-group">
             {% with messages = get_flashed_messages() %}
                 {% if messages %}
@@ -39,9 +39,9 @@
 
         <!-- buttons -->
         <div class="form-group">
-                <p>{{ form.submit() }}</p>
-                <!--TODO add button to remove recipe-->
-                <button type="button" class="btn btn-primary" onclick="addRecipe()">Add Recipe Field</button>
+            <p>{{ form.submit() }}</p>
+            <!--TODO add button to remove recipe-->
+            <button type="button" class="btn btn-primary" onclick="addRecipe()">Add Recipe Field</button>
         </div>
     </form>
 </section>
