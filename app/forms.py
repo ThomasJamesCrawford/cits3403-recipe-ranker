@@ -58,3 +58,4 @@ class RecipeForm(FlaskForm):
         'Recipe Description', validators=[DataRequired()])
     poll = SelectField('Select Poll', validators=[DataRequired()], coerce=int) # TODO might be changed when database schema is changed
     submit = SubmitField('Submit Recipe')
+

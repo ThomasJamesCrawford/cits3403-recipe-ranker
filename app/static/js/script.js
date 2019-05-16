@@ -9,6 +9,9 @@ $(document).ready(function () {
     $(".clickable-table-row").click(function () {
         window.location = $(this).data("href");
     });
+
+
+
 });
 
 function redirect(url) {
@@ -29,4 +32,16 @@ function addRecipe() {
     );
 
     $('#recipes').append($form);
+}
+
+function submitVote(poll_id) {
+    $recipe_id = $("input[name=recipe-vote" + poll_id + "]:checked").val();
+
+    $("#voteForm" + poll_id).attr('action', '/recipe/' + $recipe_id + '/vote');
+
+    if($recipe_id != null){
+        $("#voteForm" + poll_id).submit();
+    } else {
+        // havent selected a vote
+    }
 }

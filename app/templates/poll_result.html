@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<!--TODO-->
+<!--page for a poll, admins only-->
+<!--shows all information about a poll-->
+
+<article class="container">
+    <header>
+        <h1>{{ poll.name }}</h1>
+    </header>
+    <section class="row">
+        <div class="container">
+            <p>{{ poll.description }}</p>
+            <p>Date Created: {{ poll.date_created }}</p>
+        </div>
+    </section>
+    <section class="row">
+        <h2>Recipes in this Poll</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">Votes</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for r in poll.recipes.all() %}
+                <tr class='table-row'>
+                    <td>{{ r.name }}</td>
+                    <td>{{ r.votes_count }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </section>
+</article>
+
+{% endblock %}

@@ -3,7 +3,7 @@ from flask_login import current_user, login_user, logout_user, login_required
 from werkzeug.urls import url_parse
 from app import app, db
 from app.forms import LoginForm, RegistrationForm, PollForm, RecipeForm
-from app.models import User, Poll, Recipe
+from app.models import User, Poll, Recipe, Vote
 
 
 # renders home
@@ -81,7 +81,7 @@ def account():
 @app.route('/polls')
 @login_required
 def polls():
-    return render_template('polls.html', title='Polls', polls=Poll)
+    return render_template('polls.html', title='Polls', poll=Poll, vote=Vote)
 
 
 # admin page to manage polls
@@ -173,8 +173,49 @@ def add_recipe():
 @login_required
 def poll(poll_id):
     if current_user.is_admin:
-        poll = Poll.query.get_or_404(poll_id) # gives 404 if not found
+        poll = Poll.query.get_or_404(poll_id)  # gives 404 if not found
         return render_template('poll.html', title=poll.name + ' - Poll', users=User, poll=poll)
+    else:
+        abort(403)
+
+
+# renders the results page for a poll with given id
+@app.route('/poll/<int:poll_id>/result')
+@login_required
+def poll_result(poll_id):
+    if current_user.is_authenticated:
+        poll = Poll.query.get_or_404(poll_id)  # gives 404 if not found
+        return render_template('poll_result.html', title=poll.name, poll=poll)
+    else:
+        abort(403)
+
+
+# votes for a recipe with given id
+@app.route('/recipe/<int:recipe_id>/vote', methods=['GET', 'POST'])
+@login_required
+def vote_recipe(recipe_id):
+    if current_user.is_authenticated:
+        recipe = Recipe.query.get_or_404(recipe_id)  # gives 404 if not found
+        poll = Poll.query.get_or_404(recipe.poll_id)
+
+        if Vote.query.filter_by(poll_id=poll.id,
+                                user_id=current_user.id
+                                ).first():  # already has a vote
+
+            flash('You have already voted in that poll')
+            return render_template('polls.html', title='Polls', poll=Poll)
+
+        vote = Vote(
+            poll_id=poll.id,
+            user_id=current_user.id
+            )
+
+        recipe.votes_count += 1
+
+        db.session.add(vote)
+        db.session.commit()
+        flash('Voted succesfully')
+        return render_template('polls.html', title='Polls', poll=Poll, vote=Vote)
     else:
         abort(403)
 
