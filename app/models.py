@@ -19,6 +19,7 @@ class User(UserMixin, db.Model):
     is_admin = db.Column(db.Boolean, nullable=False, default=False)
     polls = db.relationship("Poll", backref='creator', lazy='dynamic')  # dynamic so we can filter the queries later
     recipes = db.relationship("Recipe", backref='contributor', lazy='dynamic')
+    votes = db.relationship("Vote", backref='user', lazy='dynamic')
 
     def __repr__(self):
         return '<User {}>'.format(self.username)
@@ -38,6 +39,7 @@ class Poll(db.Model):
     date_created = db.Column(db.DateTime, nullable=False, index=True, default=datetime.utcnow)
     creator_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     recipes = db.relationship("Recipe", backref='poll', lazy='dynamic')
+    votes = db.relationship("Vote", backref='poll', lazy='dynamic')
 
     def __repr__(self):
         return '<Poll {}>'.format(self.name)
@@ -57,10 +59,11 @@ class Recipe(db.Model):
         return '<Poll {}>'.format(self.name)
 
 
-# TODO table for storing votes so one user cant vote the same thing multiple times
 # votes table
 class Vote(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    poll_id = db.Column(db.Integer, db.ForeignKey('poll.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
     def __repr__(self):
         return '<Vote {}>'.format(self.id)
