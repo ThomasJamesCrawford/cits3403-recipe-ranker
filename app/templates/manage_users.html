@@ -2,17 +2,17 @@
 
 {% block content %}
 
-    <!--TODO-->
-    <!--TODO add way to delete users-->
-    <!--page for user management, admin only-->
+<!--TODO-->
+<!--TODO add way to delete users-->
+<!--page for user management, admin only-->
 
-    <h1>Hello Admin, {{ current_user.username }}!</h1>
-
+<section class="row">
     {% for user in current_user.query.all() %}
     <h3>Username: {{ user.username }}</h3>
     <p>Email: {{ user.email }}</p>
     <p>Admin: {{ user.is_admin }}</p>
     <p>Date Registered: {{ user.date_registered }}</p>
     {% endfor %}
+</section>
 
 {% endblock %}

@@ -6,45 +6,41 @@
 <!--page for a poll, admins only-->
 <!--shows all information about a poll-->
 
-<article class="container">
-    <header>
-        <h1>{{ poll.name }} - Poll</h1>
-    </header>
-    <section class="row">
-        <h2>About this Poll</h2>
-        <div class="container">
-            <p>Description: {{ poll.description }}</p>
-            <p>Date Created: {{ poll.date_created }}</p>
-            <p>Creator: {{ users.query.filter_by(id=poll.creator_id).first().username }}</p>
-            <a class="btn btn-secondary btn-sm" href="{{ url_for('update_poll', poll_id=poll.id) }}">Update this Poll</a>
-            <button type="button" class="btn btn-danger btn-sm" data-toggle="modal"
-                data-target="#deleteModal">Delete this Poll</button>
-        </div>
-    </section>
-    <section class="row">
-        <h2>Recipes in this Poll</h2>
-        <table class="table table-hover">
-            <thead>
-                <tr>
-                    <th scope="col">ID</th>
-                    <th scope="col">Name</th>
-                    <th scope="col">Date Added</th>
-                    <th scope="col">Contributor</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for r in poll.recipes.all() %}
-                <tr class='clickable-table-row' data-href="{{ url_for('recipe', recipe_id=r.id) }}">
-                    <th scope="row">{{ r.id }}</th>
-                    <td>{{ r.name }}</td>
-                    <td>{{ r.date_added }}</td>
-                    <td>{{ users.query.filter_by(id=r.contributor_id).first().username }}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </section>
-</article>
+<section class="row">
+    <h1>{{ poll.name }} - Poll</h1>
+    <h2>About this Poll</h2>
+    <div class="container">
+        <p>Description: {{ poll.description }}</p>
+        <p>Date Created: {{ poll.date_created }}</p>
+        <p>Creator: {{ users.query.filter_by(id=poll.creator_id).first().username }}</p>
+        <a class="btn btn-secondary btn-sm" href="{{ url_for('update_poll', poll_id=poll.id) }}">Update this Poll</a>
+        <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteModal">Delete this
+            Poll</button>
+    </div>
+</section>
+<section class="row">
+    <h2>Recipes in this Poll</h2>
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Name</th>
+                <th scope="col">Date Added</th>
+                <th scope="col">Contributor</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for r in poll.recipes.all() %}
+            <tr class='clickable-table-row' data-href="{{ url_for('recipe', recipe_id=r.id) }}">
+                <th scope="row">{{ r.id }}</th>
+                <td>{{ r.name }}</td>
+                <td>{{ r.date_added }}</td>
+                <td>{{ users.query.filter_by(id=r.contributor_id).first().username }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</section>
 
 <!-- modal -->
 <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"

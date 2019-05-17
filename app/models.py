@@ -56,7 +56,7 @@ class Recipe(db.Model):
     votes = db.relationship("Vote", backref='recipe', lazy='dynamic')
 
     def __repr__(self):
-        return '<Poll {}>'.format(self.name)
+        return '<Recipe {}>'.format(self.name)
 
 
 # votes table

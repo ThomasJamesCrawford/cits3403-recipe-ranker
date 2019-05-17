@@ -2,9 +2,10 @@
 
 {% block content %}
 
-    <!--page for registering, all users-->
+<!-- TODO bootstrap form classes -->
+<!--page for registering, all users-->
 
-    <h1>Register New Account</h1>
+<section class="row">
     <form action="" method="post">
         {{ form.hidden_tag() }}
         <p>
@@ -37,5 +38,6 @@
         </p>
         <p>{{ form.submit() }}</p>
     </form>
+</section>
 
 {% endblock %}

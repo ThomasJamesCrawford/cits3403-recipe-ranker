@@ -7,65 +7,61 @@
 <!--TODO sortable tables-->
 <!--TODO format datetime-->
 
-<article class="container">
-  <header>
-    <h1>Hello Admin, {{ current_user.username }}!</h1>
-  </header>
-  <section class="row">
-    <h2>New Polls and Recipes</h2>
-    <div class="container">
-      <ul class="list-group list-group-flush">
-        <li class="list-group-item list-group-item-action"><a href="{{ url_for('add_poll') }}">Create New Poll</a></li>
-        <li class="list-group-item list-group-item-action"><a href="{{ url_for('add_recipe') }}">Add Recipe To Poll</a></li>
-      </ul>
-    </div>
-  </section>
-  <section class="row">
-    <h2>Polls</h2>
-    <table class="table table-hover">
-      <thead>
-        <tr>
-          <th scope="col">ID</th>
-          <th scope="col">Name</th>
-          <th scope="col">Date Created</th>
-          <th scope="col">Creator ID</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for p in polls.query.all() %}
-        <tr class='clickable-table-row' data-href="{{ url_for('poll', poll_id=p.id) }}">
-          <th scope="row">{{ p.id }}</th>
-          <td>{{ p.name }}</td>
-          <td>{{ p.date_created }}</td>
-          <td>{{ p.creator_id }}</td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-  </section>
-  <section class="row">
-    <h2>Recipes</h2>
-    <table class="table table-hover">
-      <thead>
-        <tr>
-          <th scope="col">ID</th>
-          <th scope="col">Name</th>
-          <th scope="col">Date Added</th>
-          <th scope="col">Contributor ID</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for r in recipes.query.all() %}
-        <tr class='clickable-table-row' data-href="{{ url_for('recipe', recipe_id=r.id) }}">
-          <th scope="row">{{ r.id }}</th>
-          <td>{{ r.name }}</td>
-          <td>{{ r.date_added }}</td>
-          <td>{{ r.contributor_id }}</td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-  </section>
-</article>
+<section class="row">
+  <h2>New Polls and Recipes</h2>
+  <div class="container">
+    <ul class="list-group list-group-flush">
+      <li class="list-group-item list-group-item-action"><a href="{{ url_for('add_poll') }}">Create New Poll</a></li>
+      <li class="list-group-item list-group-item-action"><a href="{{ url_for('add_recipe') }}">Add Recipe To Poll</a>
+      </li>
+    </ul>
+  </div>
+</section>
+<section class="row">
+  <h2>Polls</h2>
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th scope="col">ID</th>
+        <th scope="col">Name</th>
+        <th scope="col">Date Created</th>
+        <th scope="col">Creator ID</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for p in polls.query.all() %}
+      <tr class='clickable-table-row' data-href="{{ url_for('poll', poll_id=p.id) }}">
+        <th scope="row">{{ p.id }}</th>
+        <td>{{ p.name }}</td>
+        <td>{{ p.date_created }}</td>
+        <td>{{ p.creator_id }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</section>
+<section class="row">
+  <h2>Recipes</h2>
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th scope="col">ID</th>
+        <th scope="col">Name</th>
+        <th scope="col">Date Added</th>
+        <th scope="col">Contributor ID</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for r in recipes.query.all() %}
+      <tr class='clickable-table-row' data-href="{{ url_for('recipe', recipe_id=r.id) }}">
+        <th scope="row">{{ r.id }}</th>
+        <td>{{ r.name }}</td>
+        <td>{{ r.date_added }}</td>
+        <td>{{ r.contributor_id }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</section>
 
 {% endblock %}

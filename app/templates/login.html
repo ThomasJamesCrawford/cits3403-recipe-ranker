@@ -2,21 +2,8 @@
 
 {% block content %}
 
-    <!--page for login, all users-->
-
-    <!--flashed message from tutorial-->
-    {% with messages = get_flashed_messages() %}
-    {% if messages %}
-    <ul>
-        {% for message in messages %}
-        <li>{{ message }}</li>
-        {% endfor %}
-    </ul>
-    {% endif %}
-    {% endwith %}
-
-    <!--wtf_form from tutorial-->
-    <h1>Sign In</h1>
+<!-- TODO bootstrap form classes -->
+<section class="row">
     <form action="" method="post" novalidate>
         {{ form.hidden_tag() }}
         <p>
@@ -37,5 +24,6 @@
         <p>{{ form.submit() }}</p>
     </form>
     <p>New User? <a href="{{ url_for('register') }}">Click to Register!</a></p>
+</section>
 
 {% endblock %}
