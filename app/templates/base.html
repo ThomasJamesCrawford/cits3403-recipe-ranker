@@ -25,8 +25,10 @@
             {% if current_user.is_admin %}
             <li class="nav-item"><a class="nav-link" href="{{ url_for('manage_polls') }}">Manage Polls</a></li><!-- TODO: make this change to Manage Polls when admin -->
             <li class="nav-item"><a class="nav-link" href="{{ url_for('manage_users') }}">Manage Users</a></li><!-- TODO: make this disappear when not admin -->
-            {% else %}
+            {% elif current_user.is_authenticated %}
             <li class="nav-item"><a class="nav-link" href="{{ url_for('polls') }}">Polls</a></li>
+            {% else %}
+            <li class="nav-item"><a class="nav-link" href="{{ url_for('general_polls') }}">Polls</a></li>
             {% endif %}
 
         </ul>

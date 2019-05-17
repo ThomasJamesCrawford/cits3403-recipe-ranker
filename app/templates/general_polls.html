@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <!--polls page for non logged in users-->
+
+    {% for p in polls.query.order_by(polls.date_created) %}
+    <article class="container">
+        <section class="row">
+            <div class="card">
+                <h3 class="card-header">{{ p.name }}</h3>
+                <div class="card-body">
+                    <h5 class="card-title">{{ p.description }}</h5>
+                    <ul class="list-group list-group-flush">
+                        {% for r in p.recipes.all() %}
+                        <li class="list-group-item">
+                            <strong> {{ r.name }}: </strong>{{ r.description }}
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <section class="card-footer">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Recipe</th>
+                                <th scope="col">Votes</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for r in p.recipes.all() %}
+                            <tr class='table-row'>
+                                <td>{{ r.name }}</td>
+                                <td>{{ r.votes.all()|length }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </section>
+            </div>
+        </section>
+    </article>
+    {% endfor %}
+
+    
+
+{% endblock %}

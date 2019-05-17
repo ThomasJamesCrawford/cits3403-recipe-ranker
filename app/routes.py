@@ -84,6 +84,12 @@ def polls():
     return render_template('polls.html', title='Polls', polls=Poll, votes=Vote)
 
 
+# renders all polls for non logged in
+@app.route('/general_polls')
+def general_polls():
+    return render_template('general_polls.html', title='Polls', polls=Poll)
+
+
 # admin page to manage polls
 @app.route('/manage_polls')
 @login_required
@@ -196,7 +202,6 @@ def poll(poll_id):
 
 # renders the results page for a poll with given id
 @app.route('/poll/<int:poll_id>/result')
-@login_required
 def poll_result(poll_id):
     if current_user.is_authenticated:
         poll = Poll.query.get_or_404(poll_id)  # gives 404 if not found
