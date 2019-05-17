@@ -2,56 +2,45 @@
 
 {% block content %}
 
-<section class="row">
-    <form action="" method="post">
+<div class="row">
+    <section class="col">
+        <form action="" method="post">
 
-        <!-- fields -->
-        <fieldset class="form-group">
-            <legend>{{ legend }}</legend>
-            <div class="form-grooup">
-                {{ form.hidden_tag() }}
-                <p>
-                    {{ form.name.label }}<br>
-                    {{ form.name(size=64) }}<br>
-                    {% for error in form.name.errors %}
-                    <span style="color: red;">[{{ error }}]</span>
-                    {% endfor %}
-                </p>
-                <p>
-                    {{ form.description.label }}<br>
-                    {{ form.description(size=128) }}<br>
-                    {% for error in form.description.errors %}
-                    <span style="color: red;">[{{ error }}]</span>
-                    {% endfor %}
-                </p>
-                <p>
-                    {{ form.poll.label }}<br>
-                    {{ form.poll }}<br>
-                    {% for error in form.poll.errors %}
-                    <span style="color: red;">[{{ error }}]</span>
-                    {% endfor %}
-                </p>
+            <!-- fields -->
+            <fieldset class="form-group">
+                <legend>{{ legend }}</legend>
+                <div class="form-grooup">
+                    {{ form.hidden_tag() }}
+                    <p>
+                        {{ form.name.label }}<br>
+                        {{ form.name(size=64) }}<br>
+                        {% for error in form.name.errors %}
+                        <span style="color: red;">[{{ error }}]</span>
+                        {% endfor %}
+                    </p>
+                    <p>
+                        {{ form.description.label }}<br>
+                        {{ form.description(size=128) }}<br>
+                        {% for error in form.description.errors %}
+                        <span style="color: red;">[{{ error }}]</span>
+                        {% endfor %}
+                    </p>
+                    <p>
+                        {{ form.poll.label }}<br>
+                        {{ form.poll }}<br>
+                        {% for error in form.poll.errors %}
+                        <span style="color: red;">[{{ error }}]</span>
+                        {% endfor %}
+                    </p>
+                </div>
+            </fieldset>
+
+            <!-- buttons -->
+            <div class="form-group">
+                <p>{{ form.submit() }}</p>
             </div>
-        </fieldset>
-
-        <!-- messages -->
-        <div class="form-group">
-            {% with messages = get_flashed_messages() %}
-            {% if messages %}
-            <ul>
-                {% for message in messages %}
-                <li>{{ message }}</li>
-                {% endfor %}
-            </ul>
-            {% endif %}
-            {% endwith %}
-        </div>
-
-        <!-- buttons -->
-        <div class="form-group">
-            <p>{{ form.submit() }}</p>
-        </div>
-    </form>
-</section>
+        </form>
+    </section>
+</div>
 
 {% endblock %}

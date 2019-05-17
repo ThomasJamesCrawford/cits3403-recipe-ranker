@@ -6,38 +6,39 @@
 <!--polls page, all logged in users-->
 <!--shows all information about polls for other logged in users, shows polls management for admins-->
 
-<section class="row">
-    {% for p in polls.query.order_by(polls.date_created) %}
-
-    <div class="card">
-        <form method="POST" id="voteForm{{ p.id }}">
-            <h3 class="card-header">{{ p.name }}</h3>
-            <div class="card-body">
-                <h5 class="card-title">{{ p.description }}</h5>
-                <ul class="list-group list-group-flush">
-                    {% for r in p.recipes.all() %}
-                    <li class="list-group-item">
-                        <div class="radio">
-                            <label>
-                                <input type="radio" name="recipe-vote{{ p.id }}" value="{{ r.id }}">
-                                <strong> {{ r.name }}: </strong>{{ r.description }}
-                            </label>
-                        </div>
-                    </li>
-                    {% endfor %}
-                </ul>
-            </div>
-            <div class="card-footer">
-                <button type="button" onclick="submitVote('{{ p.id }}')" class="btn btn-primary">Submit
-                    Vote</button>
-                {% if votes.query.filter_by(user_id=current_user.id, poll_id=p.id).first() %}
-                <a type="button" class="btn btn-primary" href='{{ url_for("poll_result", poll_id=p.id) }}'>view
-                    results</a>
-                {% endif %}
-            </div>
-        </form>
-    </div>
-    {% endfor %}
-</section>
+<div class="row">
+    <section class="col">
+        {% for p in polls.query.order_by(polls.date_created) %}
+        <div class="card">
+            <form method="POST" id="voteForm{{ p.id }}">
+                <h3 class="card-header">{{ p.name }}</h3>
+                <div class="card-body">
+                    <h5 class="card-title">{{ p.description }}</h5>
+                    <ul class="list-group list-group-flush">
+                        {% for r in p.recipes.all() %}
+                        <li class="list-group-item">
+                            <div class="radio">
+                                <label>
+                                    <input type="radio" name="recipe-vote{{ p.id }}" value="{{ r.id }}">
+                                    <strong> {{ r.name }}: </strong>{{ r.description }}
+                                </label>
+                            </div>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="card-footer">
+                    <button type="button" onclick="submitVote('{{ p.id }}')" class="btn btn-primary">Submit
+                        Vote</button>
+                    {% if votes.query.filter_by(user_id=current_user.id, poll_id=p.id).first() %}
+                    <a type="button" class="btn btn-primary" href='{{ url_for("poll_result", poll_id=p.id) }}'>view
+                        results</a>
+                    {% endif %}
+                </div>
+            </form>
+        </div>
+        {% endfor %}
+    </section>
+</div>
 
 {% endblock %}

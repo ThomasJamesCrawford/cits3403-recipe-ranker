@@ -6,31 +6,40 @@
 <!--page for a poll, admins only-->
 <!--shows all information about a poll-->
 
-<section class="row">
-    <h1>{{ poll.name }}</h1>
-    <div class="container">
-        <p>{{ poll.description }}</p>
-        <p>Date Created: {{ poll.date_created }}</p>
-    </div>
-</section>
-<section class="row">
-    <h2>Recipes in this Poll</h2>
-    <table class="table">
-        <thead>
-            <tr>
-                <th scope="col">Name</th>
-                <th scope="col">Votes</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for r in poll.recipes.all() %}
-            <tr class='table-row'>
-                <td>{{ r.name }}</td>
-                <td>{{ votes.query.filter_by(recipe_id=r.id).all()|length }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-</section>
+<div class="row">
+    <section class="col">
+        <header>
+            <h2>About this Poll</h2>
+        </header>
+        <div class="container">
+            <p>{{ poll.description }}</p>
+            <p>Date Created: {{ poll.date_created }}</p>
+        </div>
+    </section>
+</div>
+
+<div class="row">
+    <section class="col">
+        <header>
+            <h2>Recipes in this Poll</h2>
+        </header>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">Votes</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for r in poll.recipes.all() %}
+                <tr class='table-row'>
+                    <td>{{ r.name }}</td>
+                    <td>{{ votes.query.filter_by(recipe_id=r.id).all()|length }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </section>
+</div>
 
 {% endblock %}

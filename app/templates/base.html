@@ -26,15 +26,18 @@
         <a class="navbar-brand" href="/">Social Recipe Ranker</a>
         <ul class="navbar-nav">
             <li class="nav-item"><a class="nav-link" href="{{ url_for('index') }}">Home</a></li>
-            <li class="nav-item"><a class="nav-link" href="{{ url_for('account') }}">My Account</a></li>
+
+            {% if current_user.is_authenticated %}
+            <li class="nav-item"><a class="nav-link" href="{{ url_for('polls') }}">Polls</a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ url_for('user', user_id=current_user.id) }}">My
+                    Account</a></li>
+            {% else %}
+            <li class="nav-item"><a class="nav-link" href="{{ url_for('general_polls') }}">Polls</a></li>
+            {% endif %}
 
             {% if current_user.is_admin %}
             <li class="nav-item"><a class="nav-link" href="{{ url_for('manage_polls') }}">Manage Polls</a></li>
             <li class="nav-item"><a class="nav-link" href="{{ url_for('manage_users') }}">Manage Users</a></li>
-            {% elif current_user.is_authenticated %}
-            <li class="nav-item"><a class="nav-link" href="{{ url_for('polls') }}">Polls</a></li>
-            {% else %}
-            <li class="nav-item"><a class="nav-link" href="{{ url_for('general_polls') }}">Polls</a></li>
             {% endif %}
 
         </ul>
@@ -48,37 +51,40 @@
         </ul>
     </nav>
 
-    <!-- TODO header h1 and p contents values handled from routes.py-->
-    <header class="container">
-        {% if header_title %}
-        <h1 class="display-4">{{ header_title }}</h1>
-        {% else %}
-        <h1 class="display-4">Welcome to Recipe Ranker</h1>
-        {% endif %}
-        {% if header_desc %}
-        <p class="lead">{{ header_desc }}</p>
-        {% else %}
-        <p class="lead">Recipe Ranker, a CITS3403 Project</p>
-        {% endif %}
-    </header>
-
     <main class="container">
-        <!-- TODO make flashed messages appear below navbar and have style-->
         <!-- flashed messages -->
-        <section class="row">
-            {% with messages = get_flashed_messages() %}
-            {% if messages %}
-            <ul>
-                {% for message in messages %}
-                <li>{{ message }}</li>
+        <div class="row">
+            <div class="col">
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                {% for category, message in messages %}
+                <div class="alert alert-{{ category }} alert-dismissible fade show">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                    {{ message }}
+                </div>
                 {% endfor %}
-            </ul>
-            {% endif %}
-            {% endwith %}
-        </section>
+                {% endif %}
+                {% endwith %}
+            </div>
+        </div>
 
-        {% block content %}
-        {% endblock %}
+        <!-- TODO header h1 and p contents values handled from routes.py-->
+        <header class="row">
+            <div class="col">
+                {% if title %}
+                <h1 class="display-4">{{ title }}</h1>
+                {% else %}
+                <h1 class="display-4">Welcome to Recipe Ranker</h1>
+                {% endif %}
+                {% if description %}
+                <p class="lead">{{ description }}</p>
+                {% else %}
+                <p class="lead">Recipe Ranker, a CITS3403 Project</p>
+                {% endif %}
+            </div>
+        </header>
+
+        {% block content %}{% endblock %}
     </main>
 
     <!-- TODO footer always bottom of page-->
