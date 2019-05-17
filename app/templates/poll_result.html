@@ -29,7 +29,7 @@
                 {% for r in poll.recipes.all() %}
                 <tr class='table-row'>
                     <td>{{ r.name }}</td>
-                    <td>{{ r.votes_count }}</td>
+                    <td>{{ votes.query.filter_by(recipe_id=r.id).all()|length }}</td>
                 </tr>
                 {% endfor %}
             </tbody>

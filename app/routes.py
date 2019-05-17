@@ -81,7 +81,7 @@ def account():
 @app.route('/polls')
 @login_required
 def polls():
-    return render_template('polls.html', title='Polls', poll=Poll, vote=Vote)
+    return render_template('polls.html', title='Polls', polls=Poll, votes=Vote)
 
 
 # admin page to manage polls
@@ -145,8 +145,8 @@ def add_poll():
 def delete_vote(vote_id):
     if current_user.is_admin:
         vote = Vote.query.filter_by(id=vote_id).first()
-        recipe_id = Recipe.query.filter_by(poll_id=vote.poll_id).first().id
-        Recipe.query.filter_by(id=recipe_id).first().votes_count -= 1
+        recipe_id = vote.recipe_id
+        
         db.session.delete(vote)
         db.session.commit()
         flash('The vote was deleted', 'success')
@@ -200,7 +200,7 @@ def poll(poll_id):
 def poll_result(poll_id):
     if current_user.is_authenticated:
         poll = Poll.query.get_or_404(poll_id)  # gives 404 if not found
-        return render_template('poll_result.html', title=poll.name, poll=poll)
+        return render_template('poll_result.html', title=poll.name, poll=poll, votes=Vote)
     else:
         abort(403)
 
@@ -218,19 +218,18 @@ def vote_recipe(recipe_id):
                                 ).first():  # already has a vote
 
             flash('You have already voted in that poll')
-            return render_template('polls.html', title='Polls', poll=Poll)
+            return redirect(url_for('polls'))
 
         vote = Vote(
             poll_id=poll.id,
-            user_id=current_user.id
+            user_id=current_user.id,
+            recipe_id=recipe_id
             )
-
-        recipe.votes_count += 1
 
         db.session.add(vote)
         db.session.commit()
         flash('Voted succesfully')
-        return render_template('polls.html', title='Polls', poll=Poll, vote=Vote)
+        return redirect(url_for('polls'))
     else:
         abort(403)
 
@@ -291,7 +290,7 @@ def delete_poll(poll_id):
 def recipe(recipe_id):
     if current_user.is_admin:
         recipe = Recipe.query.get_or_404(recipe_id)
-        return render_template('recipe.html', title=recipe.name + ' - Recipe', users=User, polls=Poll, recipe=recipe, vote=Vote)
+        return render_template('recipe.html', title=recipe.name + ' - Recipe', users=User, polls=Poll, recipe=recipe, votes=Vote)
     else:
         abort(403)
 

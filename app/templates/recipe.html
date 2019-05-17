@@ -27,7 +27,7 @@
     <section class="row">
         <h2>Recipe Votes Statistics</h2><!-- TODO add other forms of stats, ie a graph-->
         <div class="container">
-            <p>Total Votes: {{ recipe.votes_count }}</p>
+            <p>Total Votes: {{ votes.query.filter_by(recipe_id=recipe.id).all()|length }}</p>
         </div>
     </section>
 </article>
@@ -47,7 +47,7 @@
                 </tr>
             </thead>
             <tbody>
-                {% for v in vote.query.filter_by(id=recipe.id) %}
+                {% for v in votes.query.filter_by(recipe_id=recipe.id) %}
                 <tr class='table-row'>
                     <td>{{ users.query.filter_by(id=v.user_id).first().username }}</td>
                     <td>{{ polls.query.filter_by(id=v.poll_id).first().name }}</td>

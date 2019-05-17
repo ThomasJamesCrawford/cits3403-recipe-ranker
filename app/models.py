@@ -53,7 +53,7 @@ class Recipe(db.Model):
     date_added = db.Column(db.DateTime, nullable=False, index=True, default=datetime.utcnow)
     contributor_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     poll_id = db.Column(db.Integer, db.ForeignKey('poll.id'), nullable=False)
-    votes_count = db.Column(db.Integer, nullable=False, default=0)
+    votes = db.relationship("Vote", backref='recipe', lazy='dynamic')
 
     def __repr__(self):
         return '<Poll {}>'.format(self.name)
@@ -64,6 +64,7 @@ class Vote(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     poll_id = db.Column(db.Integer, db.ForeignKey('poll.id'), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    recipe_id = db.Column(db.Integer, db.ForeignKey('recipe.id'), nullable=False)
 
     def __repr__(self):
         return '<Vote {}>'.format(self.id)
