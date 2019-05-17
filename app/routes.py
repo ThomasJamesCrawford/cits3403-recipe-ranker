@@ -139,6 +139,21 @@ def add_poll():
     else:
         abort(403)
 
+# delete vote
+@app.route('/vote/<int:vote_id>/delete', methods=['GET', 'POST'])
+@login_required
+def delete_vote(vote_id):
+    if current_user.is_admin:
+        vote = Vote.query.filter_by(id=vote_id).first()
+        recipe_id = Recipe.query.filter_by(poll_id=vote.poll_id).first().id
+        Recipe.query.filter_by(id=recipe_id).first().votes_count -= 1
+        db.session.delete(vote)
+        db.session.commit()
+        flash('The vote was deleted', 'success')
+        return redirect(url_for('recipe', recipe_id=recipe_id))
+    else:
+        print("ABORT")
+        abort(403)
 
 # admin page to add recipes
 @app.route('/add_recipe', methods=['GET', 'POST'])
@@ -271,12 +286,12 @@ def delete_poll(poll_id):
 
 
 # renders the page for a recipe with given id
-@app.route('/recipe/<int:recipe_id>')
+@app.route('/recipe/<int:recipe_id>', methods=['GET', 'POST'])
 @login_required
 def recipe(recipe_id):
     if current_user.is_admin:
         recipe = Recipe.query.get_or_404(recipe_id)
-        return render_template('recipe.html', title=recipe.name + ' - Recipe', users=User, polls=Poll, recipe=recipe)
+        return render_template('recipe.html', title=recipe.name + ' - Recipe', users=User, polls=Poll, recipe=recipe, vote=Vote)
     else:
         abort(403)
 

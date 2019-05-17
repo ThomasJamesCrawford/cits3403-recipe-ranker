@@ -34,6 +34,11 @@ function addRecipe() {
     $('#recipes').append($form);
 }
 
+function deleteVote(vote_id) {
+    $("#deleteVoteForm").attr('action', '/vote/' + vote_id + '/delete');
+    $("#deleteVoteModal").modal();
+}
+
 function submitVote(poll_id) {
     $recipe_id = $("input[name=recipe-vote" + poll_id + "]:checked").val();
 

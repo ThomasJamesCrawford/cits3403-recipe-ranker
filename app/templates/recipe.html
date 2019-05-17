@@ -32,6 +32,37 @@
     </section>
 </article>
 
+<article class="container">
+    <header>
+        <h1>{{ recipe.name }} - Votes</h1>
+    </header>
+    <section class="row">
+        <h2>Votes on this recipe</h2>
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">Username</th>
+                    <th scope="col">Poll Name</th>
+                    <th scope="col">Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for v in vote.query.filter_by(id=recipe.id) %}
+                <tr class='table-row'>
+                    <td>{{ users.query.filter_by(id=v.user_id).first().username }}</td>
+                    <td>{{ polls.query.filter_by(id=v.poll_id).first().name }}</td>
+                    <td> 
+                        <button type="button" class="btn btn-danger" onclick="deleteVote('{{ v.id }}')">
+                            Delete this Vote
+                        </button>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </section>
+</article>
+
 <!-- modal -->
 <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"
     aria-hidden="true">
@@ -46,6 +77,28 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 <form action="{{ url_for('delete_recipe', recipe_id=recipe.id) }}" method="POST">
+                    <!-- add routes -->
+                    <input class="btn btn-danger" type="submit" value="Delete">
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- modal -->
+<div class="modal fade" id="deleteVoteModal" tabindex="-1" role="dialog" aria-labelledby="deleteVoteModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteVoteModalLabel">Delete this Vote?</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <form id="deleteVoteForm" action="" method="POST">
                     <!-- add routes -->
                     <input class="btn btn-danger" type="submit" value="Delete">
                 </form>
