@@ -8,4 +8,10 @@ table tr[data-href] {
 .card {
     width: 100%;
     margin-top: 2rem;
+    margin-bottom: 2rem;
+}
+
+.voteGraph {
+    background-color: #000;
+    min-width: 1%;
 }

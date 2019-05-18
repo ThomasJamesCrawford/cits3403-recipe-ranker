@@ -2,7 +2,6 @@
 
 // jquery document ready
 $(document).ready(function () {
-    $("#last_modified").text(document.lastModified + " - Last Modified"); //don't think this actually does the right thing
     $("#current_time").text(new Date().toLocaleString() + " - Current Time");
 
     // clickable table row with specified href
@@ -47,6 +46,6 @@ function submitVote(poll_id) {
     if($recipe_id != null){
         $("#voteForm" + poll_id).submit();
     } else {
-        // havent selected a vote
+        // havent selected a vote do nothing
     }
 }

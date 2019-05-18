@@ -24,15 +24,19 @@
                         <tr>
                             <th scope="col">Recipe</th>
                             <th scope="col">Votes</th>
+                            <th scope="col">Graph</th>
                         </tr>
                     </thead>
                     <tbody>
+                        {% with total_votes = p.votes.all()|length if p.votes.all()|length > 0 else 1 %}
                         {% for r in p.recipes.all() %}
                         <tr class='table-row'>
                             <td>{{ r.name }}</td>
                             <td>{{ r.votes.all()|length }}</td>
+                            <td><div class="voteGraph" style="width:{{ (r.votes.all()|length) * 100 / total_votes }}%"><br></div><span>{{ (r.votes.all()|length) * 100 / total_votes }}%</span></td>
                         </tr>
                         {% endfor %}
+                        {% endwith %}
                     </tbody>
                 </table>
             </section>
