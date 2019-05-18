@@ -33,7 +33,7 @@
                         <tr class='table-row'>
                             <td>{{ r.name }}</td>
                             <td>{{ r.votes.all()|length }}</td>
-                            <td><div class="voteGraph" style="width:{{ (r.votes.all()|length) * 100 / total_votes }}%"><br></div><span>{{ (r.votes.all()|length) * 100 / total_votes }}%</span></td>
+                            <td><div class="voteGraph" style="width:{{ ((r.votes.all()|length) * 100 / total_votes)|round(2) }}%"><br></div><span>{{ ((r.votes.all()|length) * 100 / total_votes)|round(2) }}%</span></td>
                         </tr>
                         {% endfor %}
                         {% endwith %}
