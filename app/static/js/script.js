@@ -9,8 +9,12 @@ $(document).ready(function () {
         window.location = $(this).data("href");
     });
 
-
-
+    $("#password_repeat").on("input", function() {
+        if($("#password_repeat").val() != $("#password").val())
+        {
+            $("#password_repeat")[0].setCustomValidity("Passwords Must Match");
+        }
+    });
 });
 
 function redirect(url) {

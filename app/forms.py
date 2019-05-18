@@ -15,10 +15,14 @@ class LoginForm(FlaskForm):
 # TODO
 class UserForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired()])
-    email = StringField('Email', validators=[DataRequired(), Email()])
+    email = StringField(
+        'Email',
+        validators=[DataRequired(), Email()],
+        render_kw={'type': 'email'})  # client side email validation
     password = PasswordField('Password', validators=[DataRequired()])
     password_repeat = PasswordField(
-        'Repeat Password', validators=[DataRequired(), EqualTo('password')])
+        'Repeat Password',
+        validators=[DataRequired(), EqualTo('password')])
     submit = SubmitField('Submit')
 
     def validate_username(self, username):
