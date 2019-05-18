@@ -5,8 +5,6 @@ from app.models import User
 
 
 # TODO allow login with either username or email
-# TODO another login form for admin registration, with special field to authenticate so not all can be an admin
-
 class LoginForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired()])
     password = PasswordField('Password', validators=[DataRequired()])
@@ -14,13 +12,14 @@ class LoginForm(FlaskForm):
     submit = SubmitField('Sign In')
 
 
-class RegistrationForm(FlaskForm):
+# TODO
+class UserForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired()])
     email = StringField('Email', validators=[DataRequired(), Email()])
     password = PasswordField('Password', validators=[DataRequired()])
-    password2 = PasswordField(
+    password_repeat = PasswordField(
         'Repeat Password', validators=[DataRequired(), EqualTo('password')])
-    submit = SubmitField('Register')
+    submit = SubmitField('Submit')
 
     def validate_username(self, username):
         user = User.query.filter_by(username=username.data).first()
@@ -56,6 +55,6 @@ class RecipeForm(FlaskForm):
     name = StringField('Recipe Name', validators=[DataRequired()])
     description = StringField(
         'Recipe Description', validators=[DataRequired()])
-    poll = SelectField('Select Poll', validators=[DataRequired()], coerce=int) # TODO might be changed when database schema is changed
+    poll = SelectField('Select Poll', validators=[DataRequired()], coerce=int)
     submit = SubmitField('Submit Recipe')
 

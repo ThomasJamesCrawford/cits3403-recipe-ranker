@@ -2,10 +2,11 @@ from flask import render_template, flash, redirect, url_for, request, abort
 from flask_login import current_user, login_user, logout_user, login_required
 from werkzeug.urls import url_parse
 from app import app, db
-from app.forms import LoginForm, RegistrationForm, PollForm, RecipeForm
+from app.forms import LoginForm, UserForm, PollForm, RecipeForm
 from app.models import User, Poll, Recipe, Vote
 
 
+# TODO
 # renders home
 @app.route('/')
 @app.route('/index')
@@ -27,7 +28,7 @@ def login():
 
         # when user has different username or password
         if user is None or not user.check_password(form.password.data):
-            flash('Invalid username or password')
+            flash('Invalid username or password!', 'warning')
             return redirect(url_for('login'))
 
         login_user(user, remember=form.remember_me.data)
@@ -47,28 +48,27 @@ def logout():
     if current_user.is_authenticated:
         logout_user()
     else:
-        flash('Already logged out!')
+        flash('Already logged out!', 'info')
     return redirect(url_for('index'))
 
 
-# renders register for new account
+# renders register
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if current_user.is_authenticated:
         return redirect(url_for('index'))
 
-    form = RegistrationForm()
+    form = UserForm()
     if form.validate_on_submit():
         user = User(username=form.username.data, email=form.email.data)
         user.set_password(form.password.data)
         db.session.add(user)  # adds to the database
         db.session.commit()  # commits all the changes in the database
-        flash('Congratulations, you are now a registered user!')
+        flash('Congratulations, you are now a registered user!', 'success')
         return redirect(url_for('login'))
-    return render_template('register.html', title='Register', legend='Registration Form', form=form)
+    return render_template('user_form.html', title='Register', legend='Registration Form', form=form)
 
 
-# TODO
 # renders all polls for standard users, login required
 @app.route('/polls')
 @login_required
@@ -93,6 +93,17 @@ def manage_users():
 
 
 # TODO
+# add new user, admin only, can create admins
+@app.route('/add_user', methods=['GET', 'POST'])
+@login_required
+def add_user():
+    if current_user.is_admin:
+        form = UserForm()
+        return -1
+    else:
+        abort(403)
+
+
 # renders a page for a user with given id
 @app.route('/user/<int:user_id>')
 @login_required
@@ -106,6 +117,7 @@ def user(user_id):
         abort(403)
 
 
+# TODO new and old passwords
 # updates a user with given id, current logged in user only
 @app.route('/user/<int:user_id>/update', methods=['GET', 'POST'])
 @login_required
@@ -113,7 +125,18 @@ def update_user(user_id):
     if current_user.id == user_id:
         user = User.query.get_or_404(user_id)
         form = UserForm()
-        # TODO validate on submit and get
+        if form.validate_on_submit():
+            user.username = form.username.data
+            user.email = form.user.data
+            user.set_password(form.password.data)
+            db.session.commit()
+            flash('Your account has been updated!', 'success')
+            return redirect(url_for('user', user_id=user.id))
+
+        elif request.method == 'GET':
+            form.username.data = user.username
+            form.email.data = user.email
+
         return render_template('user_form.html', title='Update My Account', form=form)
     else:
         abort(403)
@@ -176,25 +199,10 @@ def add_poll():
             flash('The poll is added', 'success')
             return redirect(url_for('add_poll'))
 
-        return render_template('submit_poll.html', title='Create Poll', legend='Create a Poll', form=form)
+        return render_template('poll_form.html', title='Create Poll', legend='Create a Poll', form=form)
     else:
         abort(403)
 
-# delete vote
-@app.route('/vote/<int:vote_id>/delete', methods=['GET', 'POST'])
-@login_required
-def delete_vote(vote_id):
-    if current_user.is_admin:
-        vote = Vote.query.filter_by(id=vote_id).first()
-        recipe_id = vote.recipe_id
-
-        db.session.delete(vote)
-        db.session.commit()
-        flash('The vote was deleted', 'success')
-        return redirect(url_for('recipe', recipe_id=recipe_id))
-    else:
-        print("ABORT")
-        abort(403)
 
 # admin page to add recipes
 @app.route('/add_recipe', methods=['GET', 'POST'])
@@ -216,11 +224,28 @@ def add_recipe():
 
             db.session.add(recipe)  # adds to the database
             db.session.commit()  # commits all the changes in the database
-            flash('The recipe is added', 'success')
+            flash('The recipe has been added', 'success')
             return redirect(url_for('add_recipe'))
 
-        return render_template('submit_recipe.html', title='Add Recipe', legend='Add a Recipe', form=form)
+        return render_template('recipe_form.html', title='Add Recipe', legend='Add a Recipe', form=form)
     else:
+        abort(403)
+
+
+# delete vote
+@app.route('/vote/<int:vote_id>/delete', methods=['GET', 'POST'])
+@login_required
+def delete_vote(vote_id):
+    if current_user.is_admin:
+        vote = Vote.query.filter_by(id=vote_id).first()
+        recipe_id = vote.recipe_id
+
+        db.session.delete(vote)
+        db.session.commit()
+        flash('The vote was deleted', 'success')
+        return redirect(url_for('recipe', recipe_id=recipe_id))
+    else:
+        print("ABORT")
         abort(403)
 
 
@@ -257,7 +282,7 @@ def vote_recipe(recipe_id):
                                 user_id=current_user.id
                                 ).first():  # already has a vote
 
-            flash('You have already voted in that poll')
+            flash('You have already voted in that poll!', 'warning')
             return redirect(url_for('polls'))
 
         vote = Vote(
@@ -268,7 +293,7 @@ def vote_recipe(recipe_id):
 
         db.session.add(vote)
         db.session.commit()
-        flash('Voted succesfully')
+        flash('Voted succesfully!', 'success')
         return redirect(url_for('polls'))
     else:
         abort(403)
@@ -302,7 +327,7 @@ def update_poll(poll_id):
 
             # TODO existing recipes show up
 
-        return render_template('submit_poll.html', title='Update - ' + poll.name + ' - Poll', legend='Update - ' + poll.name + ' - Poll', form=form)
+        return render_template('poll_form.html', title='Update - ' + poll.name + ' - Poll', legend='Update - ' + poll.name + ' - Poll', form=form)
     else:
         abort(403)
 
@@ -358,7 +383,7 @@ def update_recipe(recipe_id):
             form.description.data = recipe.description
             form.poll.data = recipe.poll.id
 
-        return render_template('submit_recipe.html', title='Update - ' + recipe.name + ' - Recipe', legend='Update - ' + recipe.name + ' - Recipe', form=form)
+        return render_template('recipe_form.html', title='Update - ' + recipe.name + ' - Recipe', legend='Update - ' + recipe.name + ' - Recipe', form=form)
     else:
         abort(403)
 
