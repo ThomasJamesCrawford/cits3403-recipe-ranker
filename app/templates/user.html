@@ -27,8 +27,6 @@
         <p>Email: {{ user.email }}</p>
         <p>Date Registered: {{ user.date_registered }}</p>
         <p>Is an Admin: {{ user.is_admin }}</p>
-        <a class="btn btn-secondary btn-sm" href="{{ url_for('update_user', user_id=user.id) }}">Update this
-            User</a>
         <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteUserModal">Delete
             this User</button>
     </section>

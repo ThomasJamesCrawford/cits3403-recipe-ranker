@@ -2,17 +2,24 @@
 
 {% block content %}
 
-<!--TODO-->
-<!--TODO add way to delete users-->
 <!--page for user management, admin only-->
+
+<div class="row">
+    <section class="col">
+        <header>
+            <h2>Manage User Options</h2>
+        </header>
+        <a class="btn btn-light btn-lg btn-block" href="{{ url_for('add_user') }}">Add a New User</a>
+    </section>
+</div>
 
 <div class="row">
     <section class="col">
         <header>
             <h2>Users</h2>
         </header>
-        <table class="table table-hover">
-            <thead>
+        <table class="table table-bordered table-hover table-responsive-md">
+            <thead class="thead-light">
                 <tr>
                     <th scope="col">ID</th>
                     <th scope="col">Username</th>

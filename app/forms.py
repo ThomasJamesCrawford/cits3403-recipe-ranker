@@ -23,6 +23,7 @@ class UserForm(FlaskForm):
     password_repeat = PasswordField(
         'Repeat Password',
         validators=[DataRequired(), EqualTo('password')])
+    is_admin = BooleanField('Is an Admin')
     submit = SubmitField('Submit')
 
     def validate_username(self, username):

@@ -99,7 +99,14 @@ def manage_users():
 def add_user():
     if current_user.is_admin:
         form = UserForm()
-        return -1
+        if form.validate_on_submit():
+            user = User(username=form.username.data, email=form.email.data, is_admin=form.is_admin.data)
+            user.set_password(form.password.data)
+            db.session.add(user)
+            db.session.commit()
+            flash('The user is added', 'success')
+            return redirect(url_for('add_user'))
+        return render_template('user_form.html', title='Add User', legend='Add a User', form=form)
     else:
         abort(403)
 

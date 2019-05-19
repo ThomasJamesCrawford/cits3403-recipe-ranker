@@ -10,13 +10,10 @@
 <div class="row">
   <section class="col">
     <header>
-      <h2>New Polls and Recipes</h2>
+      <h2>Manage Polls Options</h2>
     </header>
-    <ul class="list-group list-group-flush">
-      <li class="list-group-item list-group-item-action"><a href="{{ url_for('add_poll') }}">Create New Poll</a></li>
-      <li class="list-group-item list-group-item-action"><a href="{{ url_for('add_recipe') }}">Add Recipe To Poll</a>
-      </li>
-    </ul>
+    <a class="btn btn-light btn-lg btn-block" href="{{ url_for('add_poll') }}">Create a New User</a>
+    <a class="btn btn-light btn-lg btn-block" href="{{ url_for('add_recipe') }}">Add a Recipe</a>
   </section>
 </div>
 
@@ -25,8 +22,8 @@
     <header>
       <h2>Polls</h2>
     </header>
-    <table class="table table-hover">
-      <thead>
+    <table class="table table-bordered table-hover table-responsive-md">
+      <thead class="thead-light">
         <tr>
           <th scope="col">ID</th>
           <th scope="col">Name</th>
@@ -53,8 +50,8 @@
     <header>
       <h2>Recipes</h2>
     </header>
-    <table class="table table-hover">
-      <thead>
+    <table class="table table-bordered table-hover table-responsive-md">
+      <thead class="thead-light">
         <tr>
           <th scope="col">ID</th>
           <th scope="col">Name</th>
