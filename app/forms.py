@@ -29,13 +29,21 @@ class UserForm(FlaskForm):
 
     def validate_username(self, username):
         user = User.query.filter_by(username=username.data).first()
-        if user is not None and current_user.id is not user.id:
-            raise ValidationError('Please use a different username.')
+        if user is not None:
+            if current_user.is_authenticated:
+                if current_user.id is not user.id:
+                    raise ValidationError('Please use a different username.')
+            else:
+                raise ValidationError('Please use a different username.')
 
     def validate_email(self, email):
         user = User.query.filter_by(email=email.data).first()
-        if user is not None and current_user.id is not user.id: 
-            raise ValidationError('Please use a different email address.')
+        if user is not None:
+            if current_user.is_authenticated:
+                if current_user.id is not user.id:
+                    raise ValidationError('Please use a different email address.')
+            else:
+                raise ValidationError('Please use a different email address.')
 
 
 class RecipesSubForm(FlaskForm):
