@@ -38,7 +38,7 @@ def login():
             next_page = url_for('index')
         return redirect(next_page)
 
-    return render_template('login.html', title='Sign In', form=form)
+    return render_template('login.html', title='Sign In', description='Enter your details to login', legend='Login Form', form=form)
 
 
 # logout
@@ -65,20 +65,20 @@ def register():
         db.session.commit()  # commits all the changes in the database
         flash('Congratulations, you are now a registered user!', 'success')
         return redirect(url_for('login'))
-    return render_template('user_form.html', title='Register', legend='Registration Form', form=form)
+    return render_template('user_form.html', title='Register', description='Fill the form to create an Account', legend='Registration Form', form=form)
 
 
 # renders all polls for standard users, login required
 @app.route('/polls')
 @login_required
 def polls():
-    return render_template('polls.html', title='Polls', polls=Poll, votes=Vote)
+    return render_template('polls.html', title='Polls', description='Information on the polls', polls=Poll, votes=Vote)
 
 
 # renders all polls for non logged in
 @app.route('/general_polls')
 def general_polls():
-    return render_template('general_polls.html', title='Polls', polls=Poll)
+    return render_template('general_polls.html', description='General information on the polls', title='Polls', polls=Poll)
 
 
 # admin page to manage users
@@ -104,7 +104,7 @@ def add_user():
             db.session.commit()
             flash('The user is added', 'success')
             return redirect(url_for('add_user'))
-        return render_template('user_form.html', title='Add User', legend='Add a User', form=form)
+        return render_template('user_form.html', title='Add User', description='Fill in the details of the user', legend='Add a User', form=form)
     else:
         abort(403)
 
@@ -115,7 +115,7 @@ def add_user():
 def user(user_id):
     if current_user.is_admin and current_user.id != user_id:
         user = User.query.get_or_404(user_id)
-        return render_template('user.html', title=user.username + ' - User', user=user, polls=Poll, recipes=Recipe)
+        return render_template('user.html', title=user.username + ' - User', description='Information about this user', user=user, polls=Poll, recipes=Recipe)
     elif current_user.id == user_id:
         return render_template('user.html', title='My Account', description='Welcome ' + current_user.username, user=current_user, polls=Poll, recipes=Recipe, votes=Vote)
     else:
@@ -142,7 +142,7 @@ def update_user(user_id):
             form.username.data = user.username
             form.email.data = user.email
 
-        return render_template('user_form.html', title='Update My Account', form=form)
+        return render_template('user_form.html', title='Update My Account', description='Fill in the details to be changed', form=form)
     else:
         abort(403)
 
@@ -208,7 +208,7 @@ def add_poll():
             flash('The poll is added', 'success')
             return redirect(url_for('add_poll'))
 
-        return render_template('poll_form.html', title='Create Poll', legend='Create a Poll', form=form)
+        return render_template('poll_form.html', title='Create Poll', description='Fill in the details of the poll', legend='Create a Poll', form=form)
     else:
         abort(403)
 
@@ -236,7 +236,7 @@ def add_recipe():
             flash('The recipe has been added', 'success')
             return redirect(url_for('add_recipe'))
 
-        return render_template('recipe_form.html', title='Add Recipe', legend='Add a Recipe', form=form)
+        return render_template('recipe_form.html', title='Add Recipe', description='Fill in the details of the recipe', legend='Add a Recipe', form=form)
     else:
         abort(403)
 
@@ -264,7 +264,7 @@ def delete_vote(vote_id):
 def poll(poll_id):
     if current_user.is_admin:
         poll = Poll.query.get_or_404(poll_id)  # gives 404 if not found
-        return render_template('poll.html', title=poll.name + ' - Poll', users=User, poll=poll)
+        return render_template('poll.html', title=poll.name + ' - Poll', description='Information about this poll', users=User, poll=poll)
     else:
         abort(403)
 
@@ -274,7 +274,7 @@ def poll(poll_id):
 def poll_result(poll_id):
     if current_user.is_authenticated:
         poll = Poll.query.get_or_404(poll_id)  # gives 404 if not found
-        return render_template('poll_result.html', title=poll.name, poll=poll, votes=Vote)
+        return render_template('poll_result.html', title=poll.name + ' - Results', description='The information about the results of this poll', poll=poll, votes=Vote)
     else:
         abort(403)
 
@@ -336,7 +336,7 @@ def update_poll(poll_id):
 
             # TODO existing recipes show up
 
-        return render_template('poll_form.html', title='Update - ' + poll.name + ' - Poll', legend='Update - ' + poll.name + ' - Poll', form=form)
+        return render_template('poll_form.html', title='Update - ' + poll.name + ' - Poll', description='Fill in the details to be changed', legend='Update - ' + poll.name + ' - Poll', form=form)
     else:
         abort(403)
 
@@ -366,7 +366,7 @@ def delete_poll(poll_id):
 def recipe(recipe_id):
     if current_user.is_admin:
         recipe = Recipe.query.get_or_404(recipe_id)
-        return render_template('recipe.html', title=recipe.name + ' - Recipe', users=User, polls=Poll, recipe=recipe, votes=Vote)
+        return render_template('recipe.html', title=recipe.name + ' - Recipe', description='Information about this recipe', users=User, polls=Poll, recipe=recipe, votes=Vote)
     else:
         abort(403)
 
@@ -394,7 +394,7 @@ def update_recipe(recipe_id):
             form.description.data = recipe.description
             form.poll.data = recipe.poll.id
 
-        return render_template('recipe_form.html', title='Update - ' + recipe.name + ' - Recipe', legend='Update - ' + recipe.name + ' - Recipe', form=form)
+        return render_template('recipe_form.html', title='Update - ' + recipe.name + ' - Recipe', description='Fill in the details to be changed', legend='Update - ' + recipe.name + ' - Recipe', form=form)
     else:
         abort(403)
 

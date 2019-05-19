@@ -13,6 +13,9 @@ main.container {
 main > header {
     margin-top: 2rem;
     margin-bottom: 2rem;
+    border-bottom-color: #000;
+    border-bottom-style: solid;
+    border-bottom-width: 0.1rem;
 }
 
 section > header {
