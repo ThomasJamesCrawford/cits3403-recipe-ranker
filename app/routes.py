@@ -154,6 +154,10 @@ def update_user(user_id):
 def delete_user(user_id):
     if current_user.is_admin and current_user.id != user_id:
         user = User.query.get_or_404(user_id)
+
+        for p in Poll.query.filter_by(creator_id=user.id).all():
+            delete_poll(p.id)
+
         db.session.delete(user)
         db.session.commit()
         flash('The user has been deleted!', 'success')
@@ -346,8 +350,10 @@ def delete_poll(poll_id):
     if current_user.is_admin:
         poll = Poll.query.get_or_404(poll_id)
         recipes = Recipe.query.filter_by(poll_id=poll.id).all()
+
         for r in recipes:
-            db.session.delete(r)
+            delete_recipe(r.id)
+
         db.session.delete(poll)
         db.session.commit()
         flash('The poll has been deleted!', 'success')
@@ -401,6 +407,10 @@ def update_recipe(recipe_id):
 def delete_recipe(recipe_id):
     if current_user.is_admin:
         recipe = Recipe.query.get_or_404(recipe_id)
+
+        for v in Vote.query.filter_by(recipe_id=recipe_id).all():
+            delete_vote(v.id)
+
         db.session.delete(recipe)
         db.session.commit()
         flash('The recipe has been deleted!', 'success')
