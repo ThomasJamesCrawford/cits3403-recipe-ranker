@@ -9,6 +9,7 @@ $(document).ready(function () {
         window.location = $(this).data("href");
     });
 
+    // uses the html5 validity popup is password dont match
     $("#password_repeat").on("input", function() {
         if($("#password_repeat").val() != $("#password").val())
         {
