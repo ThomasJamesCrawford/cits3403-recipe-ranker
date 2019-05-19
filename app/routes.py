@@ -134,7 +134,7 @@ def update_user(user_id):
         form = UserForm()
         if form.validate_on_submit():
             user.username = form.username.data
-            user.email = form.user.data
+            user.email = form.email.data
             user.set_password(form.password.data)
             db.session.commit()
             flash('Your account has been updated!', 'success')
