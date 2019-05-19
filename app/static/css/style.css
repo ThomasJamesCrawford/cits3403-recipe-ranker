@@ -1,5 +1,34 @@
 /* custom css */
 
+/* TODO some more tweaks on the margins */
+
+body {
+    padding-bottom: 10rem; /* adds space for footer to cover */
+}
+
+main.container {
+    padding-top: 2rem;
+}
+
+main > header {
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+}
+
+section > header {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+section {
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+}
+
+.btn-block {
+    text-align: left;
+}
+
 /* pointer change for clickable table row on hover */
 table tr[data-href] {
     cursor: pointer;

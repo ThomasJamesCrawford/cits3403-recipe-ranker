@@ -22,37 +22,41 @@
 
 <body>
     <!-- TODO highlight current tab in navbar-->
-    <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
-        <a class="navbar-brand" href="/">Social Recipe Ranker</a>
-        <ul class="navbar-nav">
-            <li class="nav-item"><a class="nav-link" href="{{ url_for('index') }}">Home</a></li>
+    <nav class="navbar navbar-expand-sm navbar-dark bg-dark sticky-top">
+        <a class="navbar-brand" href="/">Recipe Ranker</a>
+        <button class="navbar-toggler ml-auto" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="collapsibleNavbar">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item"><a class="nav-link" href="{{ url_for('index') }}">Home</a></li>
 
-            {% if current_user.is_authenticated %}
-            <li class="nav-item"><a class="nav-link" href="{{ url_for('polls') }}">Polls</a></li>
-            <li class="nav-item"><a class="nav-link" href="{{ url_for('user', user_id=current_user.id) }}">My
-                    Account</a></li>
-            {% else %}
-            <li class="nav-item"><a class="nav-link" href="{{ url_for('general_polls') }}">Polls</a></li>
-            {% endif %}
+                {% if current_user.is_authenticated %}
+                <li class="nav-item"><a class="nav-link" href="{{ url_for('polls') }}">Polls</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ url_for('user', user_id=current_user.id) }}">My
+                        Account</a></li>
+                {% else %}
+                <li class="nav-item"><a class="nav-link" href="{{ url_for('general_polls') }}">Polls</a></li>
+                {% endif %}
 
-            {% if current_user.is_admin %}
-            <li class="nav-item"><a class="nav-link" href="{{ url_for('manage_polls') }}">Manage Polls</a></li>
-            <li class="nav-item"><a class="nav-link" href="{{ url_for('manage_users') }}">Manage Users</a></li>
-            {% endif %}
+                {% if current_user.is_admin %}
+                <li class="nav-item"><a class="nav-link" href="{{ url_for('manage_polls') }}">Manage Polls</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ url_for('manage_users') }}">Manage Users</a></li>
+                {% endif %}
 
-        </ul>
-        <ul class="navbar-nav ml-auto">
-            {% if current_user.is_anonymous %}
-            <li class="nav-item"><a class="nav-link" href="{{ url_for('register') }}">Sign Up</a></li>
-            <li class="nav-item"><a class="nav-link" href="{{ url_for('login') }}">Login</a></li>
-            {% else %}
-            <li class="nav-item"><a class="nav-link" href="{{ url_for('logout') }}">Log Out</a></li>
-            {% endif %}
-        </ul>
+            </ul>
+            <ul class="navbar-nav ml-auto">
+                {% if current_user.is_anonymous %}
+                <li class="nav-item"><a class="nav-link" href="{{ url_for('register') }}">Sign Up</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ url_for('login') }}">Login</a></li>
+                {% else %}
+                <li class="nav-item"><a class="nav-link" href="{{ url_for('logout') }}">Log Out</a></li>
+                {% endif %}
+            </ul>
+        </div>
     </nav>
 
-    <main class="container">
-        <!-- flashed messages -->
+    <main class="container m-auto">
         <div class="row">
             <div class="col">
                 {% with messages = get_flashed_messages(with_categories=true) %}
@@ -87,8 +91,7 @@
         {% block content %}{% endblock %}
     </main>
 
-    <!-- TODO footer always bottom of page-->
-    <footer class="jumbotron">
+    <footer class="navbar bg-light text-dark fixed-bottom">
         <p>Authors: Archy & Thomas</p>
         <p id="current_time">Current Time</p>
     </footer>
