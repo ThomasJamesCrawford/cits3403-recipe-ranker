@@ -7,3 +7,7 @@ venv
 
 # python cache
 __pycache__
+.pytest_cache/v/cache/stepwise
+.pytest_cache/v/cache/nodeids
+app/tests/test.db
+.pytest_cache/v/cache/lastfailed
