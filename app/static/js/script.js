@@ -14,6 +14,8 @@ $(document).ready(function () {
         if($("#password_repeat").val() != $("#password").val())
         {
             $("#password_repeat")[0].setCustomValidity("Passwords Must Match");
+        } else {
+            $("#password_repeat")[0].setCustomValidity("");
         }
     });
 });
