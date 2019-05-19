@@ -3,13 +3,16 @@
 {% block content %}
 
 <!--polls page for non logged in users-->
-{% for p in polls.query.order_by(polls.date_created) %}
+
 <div class="row">
-    <section class="col">
-        <div class="card">
-            <h3 class="card-header">{{ p.name }}</h3>
+    {% for p in polls.query.order_by(polls.date_created) %}
+    <div class="col">
+        <section class="card">
+            <header>
+                <h2 class="card-header">{{ p.name }}</h2>
+            </header>
             <div class="card-body">
-                <h5 class="card-title">{{ p.description }}</h5>
+                <h3 class="card-title">{{ p.description }}</h3>
                 <ul class="list-group list-group-flush">
                     {% for r in p.recipes.all() %}
                     <li class="list-group-item">
@@ -18,7 +21,7 @@
                     {% endfor %}
                 </ul>
             </div>
-            <section class="card-footer">
+            <div class="card-footer">
                 <table class="table">
                     <thead>
                         <tr>
@@ -33,16 +36,20 @@
                         <tr class='table-row'>
                             <td>{{ r.name }}</td>
                             <td>{{ r.votes.all()|length }}</td>
-                            <td><div class="voteGraph" style="width:{{ ((r.votes.all()|length) * 100 / total_votes)|round(2) }}%"><br></div><span>{{ ((r.votes.all()|length) * 100 / total_votes)|round(2) }}%</span></td>
+                            <td>
+                                <div class="voteGraph"
+                                    style="width:{{ ((r.votes.all()|length) * 100 / total_votes)|round(2) }}%"><br>
+                                </div><span>{{ ((r.votes.all()|length) * 100 / total_votes)|round(2) }}%</span>
+                            </td>
                         </tr>
                         {% endfor %}
                         {% endwith %}
                     </tbody>
                 </table>
-            </section>
-        </div>
-    </section>
+            </div>
+        </section>
+    </div>
+    {% endfor %}
 </div>
-{% endfor %}
 
 {% endblock %}

@@ -6,7 +6,6 @@ from app.forms import LoginForm, UserForm, PollForm, RecipeForm
 from app.models import User, Poll, Recipe, Vote
 
 
-# TODO
 # renders home
 @app.route('/')
 @app.route('/index')
@@ -92,7 +91,6 @@ def manage_users():
         abort(403)
 
 
-# TODO
 # add new user, admin only, can create admins
 @app.route('/add_user', methods=['GET', 'POST'])
 @login_required
@@ -174,7 +172,7 @@ def delete_user(user_id):
 @login_required
 def manage_polls():
     if current_user.is_admin:
-        return render_template('manage_polls.html', title='Manage Polls', description='Welcome Admin ' + current_user.username, polls=Poll, recipes=Recipe)
+        return render_template('manage_polls.html', title='Manage Polls', description='Welcome Admin ' + current_user.username, polls=Poll, recipes=Recipe, users=User)
     else:
         abort(403)  # error 403 forbidden, no access if not admin
 

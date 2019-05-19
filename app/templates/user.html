@@ -12,7 +12,7 @@
             <h2>About your account</h2>
         </header>
         <p>Email: {{ user.email }}</p>
-        <p>Date Registered: {{ user.date_registered }}</p>
+        <p>Date Registered: {{ user.date_registered.strftime("%Y/%m/%d, %H:%M:%S") }}</p>
         <p>Is an Admin: {{ user.is_admin }}</p>
         <a class="btn btn-secondary btn-sm" href="{{ url_for('update_user', user_id=user.id) }}">Update your Account
             Details</a>
@@ -25,7 +25,7 @@
             <h2>About this user</h2>
         </header>
         <p>Email: {{ user.email }}</p>
-        <p>Date Registered: {{ user.date_registered }}</p>
+        <p>Date Registered: {{ user.date_registered.strftime("%Y/%m/%d, %H:%M:%S") }}</p>
         <p>Is an Admin: {{ user.is_admin }}</p>
         <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteUserModal">Delete
             this User</button>

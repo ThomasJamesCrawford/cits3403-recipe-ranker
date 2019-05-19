@@ -2,14 +2,14 @@
 
 {% block content %}
 
-<!-- TODO follow user form format -->
+<!-- page for poll related forms -->
 
 <div class="row">
     <section class="col">
         <form action="" method="post">
             {{ form.hidden_tag() }}
             <fieldset class="form-group">
-                <legend class="border-bottom mb-1">{{ legend }}</legend>
+                <legend class="border-bottom mb-3">{{ legend }}</legend>
                 <div class="form-group">
                     {{ form.name.label(class="form-control-label") }}
                     {% if form.name.errors %}
@@ -44,7 +44,7 @@
                 <button type="button" class="btn btn-secondary btn-lg" onclick="addRecipe()">Add Recipe Field</button>
                 <br>
                 {{ form.submit(class="btn btn-primary btn-lg") }}
-                <!--TODO add button to remove recipe-->
+                <!-- TODO add button to remove recipe -->
             </div>
         </form>
     </section>

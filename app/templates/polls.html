@@ -2,9 +2,9 @@
 
 {% block content %}
 
-<!--TODO-->
-<!--polls page, all logged in users-->
-<!--shows all information about polls for other logged in users, shows polls management for admins-->
+<!-- TODO -->
+<!-- polls page, all logged in users -->
+<!-- shows all information about polls for logged in users-->
 
 <div class="row">
     <section class="col">
@@ -31,7 +31,7 @@
                     <button type="button" onclick="submitVote('{{ p.id }}')" class="btn btn-primary">Submit
                         Vote</button>
                     {% if votes.query.filter_by(user_id=current_user.id, poll_id=p.id).first() %}
-                    <a type="button" class="btn btn-primary" href='{{ url_for("poll_result", poll_id=p.id) }}'>view
+                    <a type="button" class="btn btn-primary" href='{{ url_for("poll_result", poll_id=p.id) }}'>View
                         results</a>
                     {% endif %}
                 </div>

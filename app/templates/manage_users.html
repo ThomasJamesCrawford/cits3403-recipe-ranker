@@ -2,7 +2,11 @@
 
 {% block content %}
 
-<!--page for user management, admin only-->
+<!-- TODO -->
+<!-- page for user management, admin only -->
+<!-- TODO highlight current user -->
+<!-- TODO sortable tables -->
+<!-- TODO delete button on each user -->
 
 <div class="row">
     <section class="col">
@@ -34,7 +38,7 @@
                     <th scope="row">{{ u.id }}</th>
                     <td>{{ u.username }}</td>
                     <td>{{ u.email }}</td>
-                    <td>{{ u.date_registered }}</td>
+                    <td>{{ u.date_registered.strftime("%Y/%m/%d, %H:%M:%S") }}</td>
                     <td>{{ u.is_admin }}</td>
                 </tr>
                 {% endfor %}

@@ -2,10 +2,9 @@
 
 {% block content %}
 
-<!--TODO-->
-<!--page for polls management, admin only-->
-<!--TODO sortable tables-->
-<!--TODO format datetime-->
+<!-- TODO -->
+<!-- page for polls management, admin only -->
+<!-- TODO sortable tables -->
 
 <div class="row">
   <section class="col">
@@ -22,13 +21,13 @@
     <header>
       <h2>Polls</h2>
     </header>
-    <table class="table table-bordered table-hover table-responsive-md">
+    <table class="table table-bordered table-hover table-responsive-sm">
       <thead class="thead-light">
         <tr>
           <th scope="col">ID</th>
           <th scope="col">Name</th>
           <th scope="col">Date Created</th>
-          <th scope="col">Creator ID</th>
+          <th scope="col">Creator</th>
         </tr>
       </thead>
       <tbody>
@@ -36,8 +35,8 @@
         <tr class='clickable-table-row' data-href="{{ url_for('poll', poll_id=p.id) }}">
           <th scope="row">{{ p.id }}</th>
           <td>{{ p.name }}</td>
-          <td>{{ p.date_created }}</td>
-          <td>{{ p.creator_id }}</td>
+          <td>{{ p.date_created.strftime("%Y/%m/%d, %H:%M:%S") }}</td>
+          <td>{{ users.query.filter_by(id=p.creator_id).first().username }}</td>
         </tr>
         {% endfor %}
       </tbody>
@@ -50,13 +49,13 @@
     <header>
       <h2>Recipes</h2>
     </header>
-    <table class="table table-bordered table-hover table-responsive-md">
+    <table class="table table-bordered table-hover table-responsive-sm">
       <thead class="thead-light">
         <tr>
           <th scope="col">ID</th>
           <th scope="col">Name</th>
           <th scope="col">Date Added</th>
-          <th scope="col">Contributor ID</th>
+          <th scope="col">Contributor</th>
         </tr>
       </thead>
       <tbody>
@@ -64,8 +63,8 @@
         <tr class='clickable-table-row' data-href="{{ url_for('recipe', recipe_id=r.id) }}">
           <th scope="row">{{ r.id }}</th>
           <td>{{ r.name }}</td>
-          <td>{{ r.date_added }}</td>
-          <td>{{ r.contributor_id }}</td>
+          <td>{{ r.date_added.strftime("%Y/%m/%d, %H:%M:%S") }}</td>
+          <td>{{ users.query.filter_by(id=r.contributor_id).first().username }}</td>
         </tr>
         {% endfor %}
       </tbody>
