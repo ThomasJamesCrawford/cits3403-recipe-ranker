@@ -7,39 +7,51 @@
 <div class="row">
     <section class="col">
         <form action="" method="post">
-
-            <!-- fields -->
+            {{ form.hidden_tag() }}
             <fieldset class="form-group">
-                <legend>{{ legend }}</legend>
-                <div class="form-grooup">
-                    {{ form.hidden_tag() }}
-                    <p>
-                        {{ form.name.label }}<br>
-                        {{ form.name(size=64) }}<br>
+                <legend class="border-bottom mb-1">{{ legend }}</legend>
+                <div class="form-group">
+                    {{ form.name.label(class="form-control-label") }}
+                    {% if form.name.errors %}
+                    {{ form.name(class="form-control form-control-lg is-invalid") }}
+                    <div class="invalid-feedback">
                         {% for error in form.name.errors %}
-                        <span style="color: red;">[{{ error }}]</span>
+                        <span>{{ error }}</span>
                         {% endfor %}
-                    </p>
-                    <p>
-                        {{ form.description.label }}<br>
-                        {{ form.description(size=128) }}<br>
+                    </div>
+                    {% else %}
+                    {{ form.name(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    {{ form.description.label(class="form-control-label") }}
+                    {% if form.description.errors %}
+                    {{ form.description(rows="10", class="form-control form-control-lg is-invalid") }}
+                    <div class="invalid-feedback">
                         {% for error in form.description.errors %}
-                        <span style="color: red;">[{{ error }}]</span>
+                        <span>{{ error }}</span>
                         {% endfor %}
-                    </p>
-                    <p>
-                        {{ form.poll.label }}<br>
-                        {{ form.poll }}<br>
+                    </div>
+                    {% else %}
+                    {{ form.description(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    {{ form.poll.label(class="form-control-label") }}<br>
+                    {% if form.poll.errors %}
+                    {{ form.poll(class="form-control form-control-lg is-invalid") }}
+                    <div class="invalid-feedback">
                         {% for error in form.poll.errors %}
-                        <span style="color: red;">[{{ error }}]</span>
+                        <span>{{ error }}</span>
                         {% endfor %}
-                    </p>
+                    </div>
+                    {% else %}
+                    {{ form.poll(class="form-control form-control-lg") }}
+                    {% endif %}
                 </div>
             </fieldset>
-
-            <!-- buttons -->
             <div class="form-group">
-                <p>{{ form.submit() }}</p>
+                {{ form.submit(class="btn btn-primary btn-lg") }}
             </div>
         </form>
     </section>

@@ -7,29 +7,44 @@
 <div class="row">
     <section class="col">
         <form action="" method="post">
-
-            <!-- fields -->
+            {{ form.hidden_tag() }}
             <fieldset class="form-group">
-                <legend>{{ legend }}</legend>
+                <legend class="border-bottom mb-1">{{ legend }}</legend>
                 <div class="form-group">
-                    {{ form.hidden_tag() }}
-                    <p>
-                        {{ form.name.label }}<br>
-                        {{ form.name(size=64) }}<br>
-                    </p>
-                    <p>
-                        {{ form.description.label }}<br>
-                        {{ form.description(size=128) }}<br>
-                    </p>
-                    <p id="recipes"></p>
+                    {{ form.name.label(class="form-control-label") }}
+                    {% if form.name.errors %}
+                    {{ form.name(class="form-control form-control-lg is-invalid") }}
+                    <div class="invalid-feedback">
+                        {% for error in form.name.errors %}
+                        <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    {{ form.name(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    {{ form.description.label(class="form-control-label") }}
+                    {% if form.description.errors %}
+                    {{ form.description(rows="10", class="form-control form-control-lg is-invalid") }}
+                    <div class="invalid-feedback">
+                        {% for error in form.description.errors %}
+                        <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    {{ form.description(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    <div id="recipes"></div>
                 </div>
             </fieldset>
-
-            <!-- buttons -->
             <div class="form-group">
-                <p>{{ form.submit() }}</p>
+                <button type="button" class="btn btn-secondary btn-lg" onclick="addRecipe()">Add Recipe Field</button>
+                <br>
+                {{ form.submit(class="btn btn-primary btn-lg") }}
                 <!--TODO add button to remove recipe-->
-                <button type="button" class="btn btn-primary" onclick="addRecipe()">Add Recipe Field</button>
             </div>
         </form>
     </section>

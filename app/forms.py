@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from flask_login import current_user
-from wtforms import StringField, PasswordField, BooleanField, SubmitField, SelectField, FieldList, FormField
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, SelectField, FieldList, FormField, TextAreaField
 from wtforms.validators import DataRequired, ValidationError, Email, EqualTo
 from app.models import User
 
@@ -52,13 +52,13 @@ class RecipesSubForm(FlaskForm):
 
     name = StringField(
         'Recipe Name', validators=[DataRequired()])
-    description = StringField(
+    description = TextAreaField(
         'Recipe Description', validators=[DataRequired()])
 
 
 class PollForm(FlaskForm):
     name = StringField('Name', validators=[DataRequired()])
-    description = StringField('Description', validators=[DataRequired()])
+    description = TextAreaField('Description', validators=[DataRequired()])
     recipes = FieldList(
         FormField(RecipesSubForm),
         validators=[])
@@ -67,7 +67,7 @@ class PollForm(FlaskForm):
 
 class RecipeForm(FlaskForm):
     name = StringField('Recipe Name', validators=[DataRequired()])
-    description = StringField(
+    description = TextAreaField(
         'Recipe Description', validators=[DataRequired()])
     poll = SelectField('Select Poll', validators=[DataRequired()], coerce=int)
     submit = SubmitField('Submit Recipe')
