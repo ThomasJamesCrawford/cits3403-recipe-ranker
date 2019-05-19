@@ -128,6 +128,27 @@ class RoutesTestClass(unittest.TestCase):
         self.assertFalse(user.is_admin)
         self.assertTrue(user.check_password('newpass'))
 
+    def test_add_user_as_not_admin(self):
+        self.login('user1', 'password')
+        resp = self.app.post('/add_user',
+                             data=dict(username='newuser1',
+                                       email='e@test.com',
+                                       password='newpass',
+                                       password_repeat='newpass'),
+                             follow_redirects=True)
+        
+        self.assertIsNone(User.query.filter_by(username='newuser1').first())
+
+    def test_add_poll(self):
+        self.login('admin', 'admin')
+        self.app.post('/add_poll',
+                      data=dict(name='pollname',
+                                description='pdescription'))
+        
+        poll = Poll.query.filter_by(name='pollname')
+        self.assertIsNotNone(poll)
+        
+
     if __name__ == '__main__':
         unittest.main()
 
