@@ -1,12 +1,12 @@
 # cits3403-recipe-ranker
 CITS3403 Project: Social Choice
 
-### the purpose of the web application
+### The purpose of the web application
 The purpose of the application is to find the best recipe from a selection curated by administrators.
 The social choice mechanism to identify the best recipe is a first past the post polling system.
 Each unique user gets one unique vote per poll for their first preference and the winning recipe is the one with the highest votes.
 
-### the architecture of the web application
+### The architecture of the web application
 #### client side 
 HTML5, CSS, Javascript/JQuery, Bootstrap 4
 
