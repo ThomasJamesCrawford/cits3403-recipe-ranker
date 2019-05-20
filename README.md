@@ -49,5 +49,12 @@ makes system environment variables automatically loaded from a file
 ### selenium tests
 open the `/selenium-tests/Cits3403 A Social Choice.side` project file in the selenium browser extension and run all tests
 
+### database users
+user: admin
+pass: test
+
+user: test
+pass: test
+
 ### commit log
 
