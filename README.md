@@ -54,5 +54,8 @@ the db.Column etc in models.py will show errors from default linter swapping to 
 ### unit tests
 `python unittest test_unittests.py` - Runs all the unit tests and outputs results
 
+### selenium tests
+open the `/selenium-tests/Cits3403 A Social Choice.side` project file in the selenium browser extension and run all tests
+
 ### commit log
 

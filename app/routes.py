@@ -204,11 +204,27 @@ def delete_user(user_id):
         for p in Poll.query.filter_by(creator_id=user.id).all():
             delete_poll(p.id)
 
+        for r in Recipe.query.filter_by(contributor_id=user.id).all():
+            delete_recipe(r.id)
+
+        for v in Vote.query.filter_by(user_id=user.id).all():
+            delete_vote(v.id)
+
         db.session.delete(user)
         db.session.commit()
         flash('The user has been deleted!', 'success')
         return redirect(url_for('manage_users'))
     elif current_user.id == user_id:
+
+        for p in Poll.query.filter_by(creator_id=user.id).all():
+            delete_poll(p.id)
+
+        for r in Recipe.query.filter_by(contributor_id=user.id).all():
+            delete_recipe(r.id)
+
+        for v in Vote.query.filter_by(contributor_id=user.id).all():
+            delete_vote(v.id)
+
         db.session.delete(current_user)
         db.session.commit()
         flash('Your account has been deleted!', 'success')
