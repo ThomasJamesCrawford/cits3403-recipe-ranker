@@ -91,7 +91,7 @@
     }]
   }, {
     "id": "73b3a81e-e89a-4e6e-8436-fd00d4221e46",
-    "name": "Add New User",
+    "name": "Register New User",
     "commands": [{
       "id": "21a06487-a6ce-43f9-830d-60b13aafe4b7",
       "comment": "",
