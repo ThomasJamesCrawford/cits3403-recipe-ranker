@@ -33,7 +33,7 @@ function addRecipe() {
         '<label class="form-control-label" for="recipes-' + $count + '-name">Recipe Name</label> <br>' +
         '<input class="form-control form-control-lg" id="recipes-0-name" name="recipes-' + $count + '-name" required size="64" type="text" value=""> <br>' +
         '<label class="form-control-label" for="recipes-' + $count + '-description">Recipe Description</label> <br>' +
-        '<textarea class="form-control form-control-lg" id="recipes-' + $count + '-description" name="recipes-' + $count + '-description" required size="128" type="text" value="">' +
+        '<textarea class="form-control form-control-lg" id="recipes-' + $count + '-description" name="recipes-' + $count + '-description" required size="128" type="text" value=""></textarea>' +
         '</p>'
     );
 
