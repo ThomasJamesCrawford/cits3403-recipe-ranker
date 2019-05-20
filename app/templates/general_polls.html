@@ -2,7 +2,7 @@
 
 {% block content %}
 
-<!--polls page for non logged in users-->
+<!-- polls page for non logged in users -->
 
 <div class="row">
     {% for p in polls.query.order_by(polls.date_created) %}

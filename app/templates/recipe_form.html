@@ -9,7 +9,7 @@
         <form action="" method="post">
             {{ form.hidden_tag() }}
             <fieldset class="form-group">
-                <legend class="border-bottom mb-3">{{ legend }}</legend>
+                <legend>{{ legend }}</legend>
                 <div class="form-group">
                     {{ form.name.label(class="form-control-label") }}
                     {% if form.name.errors %}

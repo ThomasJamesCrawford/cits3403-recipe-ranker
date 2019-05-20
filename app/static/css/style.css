@@ -28,6 +28,17 @@ section {
     margin-bottom: 2rem;
 }
 
+legend {
+    margin-bottom: 1rem;
+    border-bottom-color: #000;
+    border-bottom-style: solid;
+    border-bottom-width: 0.1rem;
+}
+
+.btn {
+    margin: 0.25rem;
+}
+
 .btn-block {
     text-align: left;
 }
