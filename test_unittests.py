@@ -162,7 +162,7 @@ class RoutesTestClass(unittest.TestCase):
                                        password='newpass',
                                        password_repeat='newpass'),
                              follow_redirects=True)
-        
+                             
         self.assertIsNone(User.query.filter_by(username='newuser1').first())
 
     def test_add_poll(self):
@@ -170,7 +170,7 @@ class RoutesTestClass(unittest.TestCase):
         self.app.post('/add_poll',
                       data=dict(name='pollname',
                                 description='pdescription'))
-        
+
         poll = Poll.query.filter_by(name='pollname')
         self.assertIsNotNone(poll)
         
@@ -280,7 +280,8 @@ class RoutesTestClass(unittest.TestCase):
         recipe = Recipe.query.get(recipe_id)
         self.assertIsNone(recipe)
 
-    if __name__ == '__main__':
-        unittest.main()
+
+if __name__ == '__main__':
+    unittest.main()
 
 
