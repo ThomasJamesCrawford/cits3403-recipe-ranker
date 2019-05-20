@@ -43,14 +43,6 @@ makes system environment variables automatically loaded from a file
 - flask uses the file .flaskenv
 - no need to `export FLASK_APP=main.py` manually, but it is in the file .flaskenv
 
-### the database - ?not in final readme?
-`flask db upgrade` - uses newest migration script, do this when source control has a new app.db
-`flask db downgrade` - removes migration script
-`flask db migrate` - generates migration script, do this when the models are changed
-
-the db.Column etc in models.py will show errors from default linter swapping to flake8 seems to get rid of them
-- ctrl+shift+p -> select linter -> flake8 
-
 ### unit tests
 `python unittest test_unittests.py` - Runs all the unit tests and outputs results
 
