@@ -1,4 +1,5 @@
-import unittest, os
+import unittest
+import os
 from app import app, db
 from app.models import User, Poll, Recipe, Vote
 
@@ -16,6 +17,7 @@ class RoutesTestClass(unittest.TestCase):
 
         u1 = User(username='user1', email='test@gmail.com')
         u1.set_password('password')
+
         admin1 = User(username='admin', email='admin@gmail.com', is_admin=True)
         admin1.set_password('admin')
 
@@ -54,51 +56,62 @@ class RoutesTestClass(unittest.TestCase):
 
     # login as account
     def login(self, user, password):
-        self.app.post('/login',
-                      data=dict(username=user,
-                                password=password,
-                                ),
-                      follow_redirects=True)       
+        self.app.post(
+            '/login',
+            data=dict(
+                username=user,
+                password=password,
+            ),
+            follow_redirects=True)
 
     def test_register(self):
-        self.app.post('/register',
-                      data=dict(username='usertemp',
-                                email='email@email.com',
-                                password='1234',
-                                password_repeat='1234'
-                                ),
-                      follow_redirects=True)
+        self.app.post(
+            '/register',
+            data=dict(
+                username='usertemp',
+                email='email@email.com',
+                password='1234',
+                password_repeat='1234'
+            ),
+            follow_redirects=True)
 
         # The new user is in the database
         self.assertTrue(User.query.filter_by(username='usertemp').first())
 
     def test_register_nametaken(self):
-        response = self.app.post('/register',
-                                 data=dict(username='newuser',
-                                           email='test@gmail.com',
-                                           password='1234',
-                                           password_repeat='1234'
-                                           ),
-                                 follow_redirects=True)
+        response = self.app.post(
+                        '/register',
+                        data=dict(
+                            username='newuser',
+                            email='test@gmail.com',
+                            password='1234',
+                            password_repeat='1234'
+                        ),
+                        follow_redirects=True)
 
-        # The new user is in the database
-        self.assertFalse(User.query.filter_by(username='newuser', email='test@gmail.com').first())
+        # The new user is not in the database
+        self.assertFalse(User.query.filter_by(
+            username='newuser', email='test@gmail.com').first())
 
         # Email is taken
-        self.assertIn(b'Please use a different email address.', response.data)
+        self.assertIn(
+            b'Please use a different email address.', response.data)
 
     def test_register_emailtaken(self):
-        response = self.app.post('/register',
-                                 data=dict(username='user1',
-                                           email='email@email.com',
-                                           password='1234',
-                                           password_repeat='1234'
-                                           ),
-                                 follow_redirects=True)
+        response = self.app.post(
+            '/register',
+            data=dict(
+                username='user1',
+                email='email@email.com',
+                password='1234',
+                password_repeat='1234'
+                ),
+            follow_redirects=True)
 
-        # The new user is in the database
-        self.assertFalse(User.query.filter_by(username='user1', email='email@email.com').first())
-        
+        # The new user is not in the database
+        self.assertFalse(User.query.filter_by(
+            username='user1', email='email@email.com').first())
+
         # Username is taken
         self.assertIn(b'Please use a different username.', response.data)
 
@@ -111,26 +124,31 @@ class RoutesTestClass(unittest.TestCase):
     def test_update_user(self):
         self.login('user1', 'password')
         user_id = User.query.filter_by(username='user1').first().id
-        resp = self.app.post('/user/{}/update'.format(user_id),
-                        data=dict(username='newuser',
-                                email='newmail@g.com',
-                                password='newpass',
-                                password_repeat='newpass'))
+        self.app.post(
+            '/user/{}/update'.format(user_id),
+            data=dict(
+                username='newuser',
+                email='newmail@g.com',
+                password='newpass',
+                password_repeat='newpass')
+            )
 
         user = User.query.filter_by(id=user_id).first()
-     
+
         self.assertEqual(user.username, 'newuser')
         self.assertTrue(user.check_password('newpass'))
 
     def test_add_user_admin(self):
         self.login('admin', 'admin')
-        resp = self.app.post('/add_user',
-                             data=dict(username='newuser5',
-                                       email='email@test.com',
-                                       password='newpass',
-                                       is_admin=True,
-                                       password_repeat='newpass'))
-        
+        self.app.post(
+            '/add_user',
+            data=dict(
+                username='newuser5',
+                email='email@test.com',
+                password='newpass',
+                is_admin=True,
+                password_repeat='newpass'))
+
         user = User.query.filter_by(username='newuser5').first()
 
         self.assertEqual(user.username, 'newuser5')
@@ -140,13 +158,15 @@ class RoutesTestClass(unittest.TestCase):
 
     def test_add_user_not_admin(self):
         self.login('admin', 'admin')
-        resp = self.app.post('/add_user',
-                             data=dict(username='newuser1',
-                                       email='e@test.com',
-                                       password='newpass',
-                                       password_repeat='newpass'),
-                             follow_redirects=True)
-        
+        self.app.post(
+            '/add_user',
+            data=dict(
+                username='newuser1',
+                email='e@test.com',
+                password='newpass',
+                password_repeat='newpass'),
+            follow_redirects=True)
+
         user = User.query.filter_by(username='newuser1').first()
 
         self.assertEqual(user.username, 'newuser1')
@@ -156,42 +176,48 @@ class RoutesTestClass(unittest.TestCase):
 
     def test_add_user_as_not_admin(self):
         self.login('user1', 'password')
-        resp = self.app.post('/add_user',
-                             data=dict(username='newuser1',
-                                       email='e@test.com',
-                                       password='newpass',
-                                       password_repeat='newpass'),
-                             follow_redirects=True)
-                             
+        self.app.post(
+            '/add_user',
+            data=dict(
+                username='newuser1',
+                email='e@test.com',
+                password='newpass',
+                password_repeat='newpass'),
+            follow_redirects=True)
+
         self.assertIsNone(User.query.filter_by(username='newuser1').first())
 
     def test_add_poll(self):
         self.login('admin', 'admin')
-        self.app.post('/add_poll',
-                      data=dict(name='pollname',
-                                description='pdescription'))
+        self.app.post(
+            '/add_poll',
+            data=dict(
+                name='pollname',
+                description='pdescription'))
 
         poll = Poll.query.filter_by(name='pollname')
         self.assertIsNotNone(poll)
-        
+
     def test_add_poll_as_user(self):
         self.login('user1', 'password')
-        self.app.post('/add_poll',
-                      data=dict(name='newpoll',
-                                description='pdescription'))
-        
+        self.app.post(
+            '/add_poll',
+            data=dict(
+                name='newpoll',
+                description='pdescription'))
+
         poll = Poll.query.filter_by(name='newpoll').first()
         self.assertIsNone(poll)
 
     def test_add_recipe(self):
         self.login('admin', 'admin')
-
         poll_id = Poll.query.filter_by(name='poll1').first().id
-
-        self.app.post('/add_recipe',
-                      data=dict(name='recipename',
-                                description='rdescription',
-                                poll=poll_id))
+        self.app.post(
+            '/add_recipe',
+            data=dict(
+                name='recipename',
+                description='rdescription',
+                poll=poll_id))
 
         recipe = Recipe.query.filter_by(name='recipename').first()
 
@@ -203,11 +229,13 @@ class RoutesTestClass(unittest.TestCase):
 
         poll = Poll.query.first()
 
-        self.app.post('/add_recipe',
-                      data=dict(name='recipename',
-                                description='rdescription',
-                                poll=poll.id))
-        
+        self.app.post(
+            '/add_recipe',
+            data=dict(
+                name='recipename',
+                description='rdescription',
+                poll=poll.id))
+
         recipe = Recipe.query.filter_by(name='recipename').first()
 
         self.assertIsNone(recipe)
@@ -217,7 +245,7 @@ class RoutesTestClass(unittest.TestCase):
         vote = Vote.query.first()
 
         self.app.post('/vote/{}/delete'.format(vote.id))
-        
+
         vote = Vote.query.get(vote.id)
 
         self.assertIsNone(vote)
@@ -227,7 +255,7 @@ class RoutesTestClass(unittest.TestCase):
         vote = Vote.query.first()
 
         self.app.post('/vote/{}/delete'.format(vote.id))
-        
+
         vote = Vote.query.get(vote.id)
 
         self.assertIsNotNone(vote)
@@ -264,7 +292,10 @@ class RoutesTestClass(unittest.TestCase):
 
         self.app.post(
             '/recipe/{}/update'.format(recipe_id),
-            data=dict(name='newname', description='newdesc', poll=poll2_id))
+            data=dict(
+                name='newname',
+                description='newdesc',
+                poll=poll2_id))
 
         recipe = Recipe.query.get(recipe_id)
         self.assertEqual(recipe.poll_id, poll2_id)
@@ -283,5 +314,3 @@ class RoutesTestClass(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
-
-

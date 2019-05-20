@@ -1,6 +1,14 @@
 from flask_wtf import FlaskForm
 from flask_login import current_user
-from wtforms import StringField, PasswordField, BooleanField, SubmitField, SelectField, FieldList, FormField, TextAreaField
+from wtforms import (
+    StringField,
+    PasswordField,
+    BooleanField,
+    SubmitField,
+    SelectField,
+    FieldList,
+    FormField,
+    TextAreaField)
 from wtforms.validators import DataRequired, ValidationError, Email, EqualTo
 from app.models import User
 
@@ -41,7 +49,8 @@ class UserForm(FlaskForm):
         if user is not None:
             if current_user.is_authenticated:
                 if current_user.id is not user.id:
-                    raise ValidationError('Please use a different email address.')
+                    raise ValidationError(
+                        'Please use a different email address.')
             else:
                 raise ValidationError('Please use a different email address.')
 
@@ -71,4 +80,3 @@ class RecipeForm(FlaskForm):
         'Recipe Description', validators=[DataRequired()])
     poll = SelectField('Select Poll', validators=[DataRequired()], coerce=int)
     submit = SubmitField('Submit Recipe')
-

@@ -9,7 +9,9 @@ app.config.from_object(Config)
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 login_manager = LoginManager(app)
-login_manager.login_view = 'login' # sets the route for login required
-login_manager.login_message_category = 'info' # sets the style for the message of login required
+# sets the route for login required
+login_manager.login_view = 'login'
+# sets the style for the message of login required
+login_manager.login_message_category = 'info'
 
 from app import routes, models
