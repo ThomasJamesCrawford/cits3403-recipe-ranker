@@ -1,23 +1,23 @@
 # cits3403-recipe-ranker
 CITS3403 Project: Social Choice
 
-### The purpose of the web application
+## The purpose of the web application
 The purpose of the application is to find the best recipe from a selection curated by administrators.
 The social choice mechanism to identify the best recipe is a first past the post polling system.
 Each unique user gets one unique vote per poll for their first preference and the winning recipe is the one with the highest votes.
 
-### The architecture of the web application
-#### client side 
+## The architecture of the web application
+### client side 
 HTML5, CSS, Javascript/JQuery, Bootstrap 4
 
-#### server side
+### server side
 Flask -  micro web framework for routing
     WTForms - form input handling and validation
     Flask-Login - user session management
 
 SQLAlchemy - database engine
 
-## running the flask app
+## running the flask app locally
 
 ### prerequisites
 1. install python version 3
@@ -43,18 +43,22 @@ makes system environment variables automatically loaded from a file
 - flask uses the file .flaskenv
 - no need to `export FLASK_APP=main.py` manually, but it is in the file .flaskenv
 
-### unit tests
+## unit tests
 `python unittest test_unittests.py` - Runs all the unit tests and outputs results
 
-### selenium tests
+## selenium tests
 open the `/selenium-tests/Cits3403 A Social Choice.side` project file in the selenium browser extension and run all tests
 
-### database users
+## database users (running locally)
 user: admin
 pass: test
 
 user: test
 pass: test
 
-### commit log
+## commit log
 log.txt
+
+## deployed website
+
+https://cits3403-recipe-ranker.herokuapp.com/
